@@ -5,8 +5,8 @@ Version: 0.1.0
 Author: Desi Quintans
 Maintainer: Desi Quintans <science@desiquintans.com>
 Description: Fuzzily search dataframe column names, labels, and factor levels to find
-    which columns contain the variables you need. Designed for use with large medical
-    data that can span thousands of columns and millions of rows.
+    which columns contain the variables you need. Designed for use with large 
+    dataframes that can span thousands of columns and millions of rows.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -14,6 +14,5 @@ Depends:
     R (>= 3.4.0)
 Imports:
     cli,
-    fastdigest,
-    stats
-RoxygenNote: 7.2.2
+    fastdigest
+RoxygenNote: 7.2.3
