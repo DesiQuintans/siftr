@@ -26,12 +26,15 @@ some_uniques <- function(x) {
         return(trimws(paste(pool$marker, "NA")))
     }
 
-    # if (length(uniques) <= 1) {
-    #     # cli::ansi_collapse() bug: https://github.com/r-lib/cli/issues/590
-    #     trimws(paste(pool$marker, uniques))
-    # } else {
-    return(trimws(paste(pool$marker, cli::ansi_collapse(uniques, width = Inf, style = "head", last = ", and "))))
-    # }
+    # Avoiding an issue with Excel where cells are limited to 32k characters. Probably
+    # smart to limit the length of this output anyway so that the haystack being searched
+    # is not too long.
+    charlen <- cumsum(nchar(uniques))   # Running count of character length
+    uniques <- uniques[charlen <= 500]  # All elements until the 500th character.
+
+    return(trimws(paste(pool$marker,
+                     cli::ansi_collapse(uniques, width = Inf,
+                                        style = "head", last = ", "))))
 }
 
 
