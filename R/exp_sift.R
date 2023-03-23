@@ -75,13 +75,13 @@ closure.sift <- function() {
 
         if (total_results > options_sift("sift_limit")) {
             excess_results <- total_results - options_sift("sift_limit")
-            candidates <- 1:options_sift("sift_limit")
+            shown_candidates <- candidates[1:options_sift("sift_limit")]
         }
 
         # If there are no matches (integer(0)), this returns a dataframe with no rows.
-        found <- dict[candidates, ]
+        found <- dict[shown_candidates, ]
 
-        if (length(candidates) < 1) {
+        if (length(shown_candidates) < 1) {
             # No matches.
             cli::cli_alert_danger(msg_sift("no matches", 1, query, .dist))
 
@@ -96,7 +96,7 @@ closure.sift <- function() {
             # There's at least one match. I use display_row() to print every row of the return dataframe.
             apply(X = found, MARGIN = 1, FUN = display_row)
 
-            plur <- plural(length(candidates))
+            plur <- plural(length(shown_candidates))
             cli::cat_line()
             cli::cli_alert_success(msg_sift("n results", 1,
                                             plur$were,
@@ -110,7 +110,8 @@ closure.sift <- function() {
             }
         }
 
-        return(invisible(found))
+        # Return a dataframe of all results, not just the ones that were shown.
+        return(invisible(dict[candidates, ]))
     }
 
     return(s)
