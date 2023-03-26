@@ -42,7 +42,7 @@ sift(starwars, homewolrd, .dist = 0.25)
 #> ✔ There was 1 result for query `homewolrd`.
 
 
-# Regular expressions are fine too
+# Regular expressions are fine, but must be given as a Character string
 sift(starwars, "gr(a|e)y")
 
 #> 4 hair_color
@@ -72,7 +72,7 @@ sift(mtcars_lab, gallon, mileage)
 #> ✔ There was 1 result for query `(?=.*gallon)(?=.*mileage)`.
 
 
-# Regex can be used in an orderless search too
+# Regex can be used in an orderless search too (very powerful!)
 sift(mtcars_lab, "auto(matic)*", transmission)
 
 #> 10 am
@@ -96,6 +96,9 @@ sift(mtcars_lab, "auto(matic)*", transmission)
 5. Its unique values (`unique(col)`), sampled at random for large datasets
 
 The more of these fields you can fill out, the more informative and powerful `sift` will be. 
+
+`sift` pairs well with one of my other packages, [`tsv2label`](https://github.com/DesiQuintans/tsv2label),
+which can label, rename, and factorise a dataset using a plain text dictionary.
 
 
 # Functions in `sift`
