@@ -96,7 +96,12 @@ coltype <- function(x) {
     #   character           * character
 
     if (has_class(x, "factor")) {
-        return(sprintf("factor %s%i", cli::symbol$times, length(levels(x))))
+        ordered <- ""
+        if (is.ordered(x)) {
+            ordered <- " (ord.)"
+        }
+
+        return(sprintf("factor %s%i%s", cli::symbol$times, length(levels(x)), ordered))
     }
 
     if (has_class(x, "haven_labelled")) {
