@@ -9,8 +9,8 @@ save_dictionary(df, path = getwd(), ...)
 \arguments{
 \item{df}{(Dataframe) The dataframe whose dictionary you want to save.}
 
-\item{path}{(Character) The path to save the dictionary to. The dictionary
-will be created in a new subfolder called \code{"{df}_dictionary"}.}
+\item{path}{(Character) The path to save the dictionary to. The dictionary's
+files will be put into a new subfolder called \code{"{df}_dictionary"}.}
 
 \item{...}{(Dots) Other named arguments that will be passed to \code{\link[utils:write.table]{utils::write.table()}}.}
 }
@@ -23,9 +23,10 @@ your file explorer.
 Saves a data dictionary in a form that is usable by my dataframe
 labelling package, \href{https://github.com/DesiQuintans/tsv2label}{\code{tsv2label}}.
 
-This function creates a folder called \code{"{df name}_dictionary"} that contains a
-file called \code{index.tsv}. \emph{The folder itself} is the data dictionary, and
-\code{tsv2label} looks inside it to do its labelling.
+This function creates a folder called \code{"{df name}_dictionary"} that contains
+a file called \code{index.tsv} and other files that contain factor level
+definitions. \emph{The folder itself} is the data dictionary, and \code{tsv2label}
+looks inside it to do its labelling.
 
 Under normal circumstances you would simply save the dataframe using
 \code{\link[=saveRDS]{saveRDS()}} or \code{\link[=save]{save()}}, both of which save the dataframe exactly as it is,

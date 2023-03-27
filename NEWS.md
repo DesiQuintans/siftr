@@ -1,5 +1,9 @@
 # unreleased
 
+- CHANGED
+    - `save_dictionary()` generates factor files for each unique factor in the dataframe now, according to the `tsv2label` spec.
+    
+    
 
 # sift 0.2.0 (2023-03-27)
 
@@ -9,6 +13,7 @@
 
 - FIXED
     - sift() returns a dataframe of all results, not just the first `n = sift_limit` results.
+
 
 
 # sift 0.1.0 (2023-03-18)
