@@ -70,6 +70,7 @@ closure.sift <- function() {
         # ---- 3. Display the results of the sift ----------------------------------------
 
         # First, determine how many results to show based on the sift_limit option.
+        shown_candidates <- candidates
         total_results  <- length(candidates)
         excess_results <- 0
 
