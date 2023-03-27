@@ -1,6 +1,6 @@
 # Sift
 
-If you work as an analyst, you probably shift projects often and need to get oriented in a new dataset quickly. `sift` is an interactive tool that helps you find the column you need in a large dataframes using powerful 'fuzzy' searches.
+If you work as an analyst, you probably shift projects often and need to get oriented in a new dataset quickly. `sift` is an interactive tool that helps you find the column you need in a large dataframe using powerful 'fuzzy' searches.
 
 It was designed with medical, census, and survey data in mind, where dataframes can reach hundreds of columns and millions of rows.
 
@@ -18,9 +18,11 @@ It was designed with medical, census, and survey data in mind, where dataframes 
 ``` r
 library(sift)
 data(starwars, package = "dplyr")
+```
 
-# By default, sift searches for exact matches in a column's
-# names, labels, levels, and unique values.
+By default, sift searches for exact matches in a column's names, labels, levels, and unique values. As a convenience, you can type bare names in (i.e. `color` instead of `"color"`) for simple queries.
+
+``` r
 sift(starwars, color)
 
 #> ℹ Building dictionary for 'starwars'. This only happens when it changes.
@@ -37,10 +39,11 @@ sift(starwars, color)
 #>         Peek: blue-gray, yellow, unknown, red, blue, gold, black, haze…
 #> 
 #> ✔ There were 3 results for query `color`.
+```
 
+The `.dist` argument opts-in to approximate searching. It can take an integer (the number of characters that can be flexibly matched) or a double between 0 and 1 (e.g. `0.25` = 25% of the query pattern's length can be flexibly matched).
 
-# .dist argument opts-in to approximate searching
-# 0.25 = 25% of the pattern length can be substituted
+``` r
 sift(starwars, homewolrd, .dist = 0.25)
 
 #> 10 homeworld
@@ -48,9 +51,11 @@ sift(starwars, homewolrd, .dist = 0.25)
 #>         Peek: Serenno, Trandosha, Aleen Minor, Cerea, Cato Neimoidia, …
 #> 
 #> ✔ There was 1 result for query `homewolrd`.
+```
 
+You can search with regular expressions, but these must be given as Character strings.
 
-# Regular expressions are fine, but must be given as a Character string
+``` r
 sift(starwars, "gr(a|e)y")
 
 #> 4 hair_color
@@ -64,9 +69,11 @@ sift(starwars, "gr(a|e)y")
 #>         Peek: blue-gray, yellow, unknown, red, blue, gold, black, haze…
 #> 
 #> ✔ There were 3 results for query `gr(a|e)y`.
+```
 
+If you give multiple queries, then you will get an orderless look-around search.
 
-# Multiple queries does an orderless look-around search
+``` r
 sift(mtcars_lab, gallon, mileage)
 
 #> ℹ Building dictionary for 'mtcars_lab'. This only happens when it changes.
@@ -78,17 +85,22 @@ sift(mtcars_lab, gallon, mileage)
 #>         Peek: 15.2, 21.5, 15, 30.4, 16.4, 14.3, 24.4, 15.5, 19.2, 22.8…
 #> 
 #> ✔ There was 1 result for query `(?=.*gallon)(?=.*mileage)`.
+```
 
+Finally (and most powerfully), you can combine regular expressions and orderless look-around searches.
 
-# Regex can be used in an orderless search too (very powerful!)
-sift(mtcars_lab, "auto(matic)*", transmission)
+``` r
+sift(starwars, color, "[a-z]{4}_")
 
-#> 10 am
-#>     Transmission
-#>         Type: factor ×2         Missing: 0 %            All same? No            
-#>         Peek: Manual, and Automatic
+#> 4 hair_color
+#>         Type: character          Missing: 5 %            All same? No             
+#>         Peek: blond, unknown, none, auburn, grey, blonde, brown, auburn,…
 #> 
-#> ✔ There was 1 result for query `(?=.*auto(matic)*)(?=.*transmission)`.
+#> 5 skin_color
+#>         Type: character          Missing: 0 %            All same? No             
+#>         Peek: white, brown mottle, white, blue, fair, green, yellow, blu…
+#> 
+#> ✔ There were 2 results for query `(?=.*color)(?=.*[a-z]4_)`.
 ```
 
 ## `sift` works best on labelled data
