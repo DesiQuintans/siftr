@@ -1,11 +1,19 @@
 # Sift
 
-If you work as an analyst, you probably shift projects often and need to get 
-oriented in a new dataset quickly. `sift` is an interactive tool that helps you 
-find the column you need in a large dataframes using powerful 'fuzzy' searches. 
+If you work as an analyst, you probably shift projects often and need to get oriented in a new dataset quickly. `sift` is an interactive tool that helps you find the column you need in a large dataframes using powerful 'fuzzy' searches.
 
-It was designed with medical, census, and survey data in mind, where dataframes 
-can reach hundreds of columns and millions of rows. 
+It was designed with medical, census, and survey data in mind, where dataframes can reach hundreds of columns and millions of rows.
+
+# Functions in `sift`
+
+| Function         | Description                                          |
+|:-----------------|:-----------------------------------------------------|
+| `sift()`         | Search through a dataframe's columns.                |
+| `save_dictionary()` | Save the data dictionary for use with [`tsv2label`][1] |
+| `options_sift()` | Get and set options related to how `sift` functions. |
+| `mtcars_lab`     | A dataset bundled with the package for testing.      |
+
+# Examples
 
 ``` r
 library(sift)
@@ -83,28 +91,21 @@ sift(mtcars_lab, "auto(matic)*", transmission)
 #> ✔ There was 1 result for query `(?=.*auto(matic)*)(?=.*transmission)`.
 ```
 
-
-
 ## `sift` works best on labelled data
 
 `sift` searches through these fields:
 
-1. A column's name (`colnames(df)`)
-2. Its label (`attr(col, "label")`; placed by many packages including `haven` and `labelled`)
-3. Its value labels (`attr(col, "labels")`; often hold-overs from SPSS or SAS datasets)
-4. Its factor levels (`levels(col)`)
-5. Its unique values (`unique(col)`), sampled at random for large datasets
+1.  A column's name (`colnames(df)`)
+2.  Its label (`attr(col, "label")`; placed by many packages including `haven` and `labelled`)
+3.  Its value labels (`attr(col, "labels")`; often hold-overs from SPSS or SAS datasets)
+4.  Its factor levels (`levels(col)`)
+5.  Its unique values (`unique(col)`), sampled at random for large datasets
 
-The more of these fields you can fill out, the more informative and powerful `sift` will be. 
+The more of these fields you can fill out, the more informative and powerful `sift` will be.
 
-`sift` pairs well with one of my other packages, [`tsv2label`](https://github.com/DesiQuintans/tsv2label),
-which can label, rename, and factorise a dataset using a plain text dictionary.
+`sift` pairs well with one of my other packages, [`tsv2label`][1], which can label, rename, and factorise a dataset using a plain text dictionary.
 
 
-# Functions in `sift`
 
-| Function         | Description                                          |
-| :--------------- | :--------------------------------------------------- |
-| `sift()`         | Search through a dataframe's columns.                |
-| `options_sift()` | Get and set options related to how `sift` functions. |
-| `mtcars_lab`     | A dataset bundled with the package for testing.      |
+
+[1]: https://github.com/DesiQuintans/tsv2label
