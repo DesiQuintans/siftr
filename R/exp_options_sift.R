@@ -7,33 +7,54 @@
 #' - `sift_guessmax` (Integer; default `1000`)
 #'     - Running summary statistics on very large dataframes (hundreds of columns, millions
 #'       of rows) can take a long time. This option controls the point at which [sift()]
-#'       decides that a column has too much data in it to use as-is, and starts randomly
-#'       sampling from it instead. For any dataframe with `nrow() <= guessmax`, the entirety
+#'       decides that a dataframe has too many rows to use as-is, and starts randomly
+#'       sampling from it instead.
+#'     - For any dataframe with `nrow() <= guessmax`, the entirety
 #'       of each column will be used for summary stats like "Missing %" and "Peek at
-#'       unique values". Above this row count, `guessmax` elements of each column will be
+#'       unique values". Above this row count, `n = guessmax` elements of each column will be
 #'       randomly sampled without replacement to make these stats, and a warning glyph
-#'       will be shown alongside those stats.
+#'       will be shown alongside those stats to show that they were estimated.
 #'
 #' @param key (String) The name of an option.
 #' @param val (Optional) A new value for the option, if you want to change it.
 #'
-#' @return The option's value.
+#' @return The option's value. If invoked with no arguments (`options_sift()`),
+#'     prints the status of all options to the console and returns `NULL`.
 #' @export
 #'
 #' @examples
-#' # options_sift("sift_limit")  # Returns the option's current value
+#' \dontrun{
+#' options_sift("sift_limit")  # Returns the option's current value
 #'
-#' # options_sift("sift_limit", 100)  # Change the value to something else.
+#' options_sift("sift_limit", 100)  # Change the value to something else.
 #'
-#' # Options set in this function are set in R's options() interface
-#' # options("sift_limit")
-#' # getOption("sift_limit")
+#' # Options set in this function are set in R's [options()] interface
+#' options("sift_limit")
+#' getOption("sift_limit")
+#' }
 #' @md
 options_sift <- function(key = c("sift_limit", "sift_guessmax"), val = NULL) {
     default_setting <- list(
         sift_limit    = 25,
         sift_guessmax = 1000
     )
+
+    if (identical(key, eval(formals(options_sift)$key))) {
+        # options_sift() was called with no arguments. Print something helpful.
+        curr_options <- paste(cli::col_green(names(default_setting)), default_setting, sep = " = ")
+        names(curr_options) <- rep(" ", length(curr_options))
+
+        cli::cli_text("Sift's options are currently:")
+        cli::cat_line()
+        cli::cli_bullets(curr_options)
+        cli::cat_line()
+        cli::cli_text("See ", cli::col_yellow("?options_sift"), " for what these control.")
+
+        # I choose not to return curr_options here because I do not want to
+        # create anoter way of getting options. All option accesses in sift
+        # should happen through options_sift("name of option").
+        return(invisible(NULL))
+    }
 
     if ((key %in% names(default_setting)) == FALSE) {
         cli::cli_abort(c(

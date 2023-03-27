@@ -12,7 +12,8 @@ options_sift(key = c("sift_limit", "sift_guessmax"), val = NULL)
 \item{val}{(Optional) A new value for the option, if you want to change it.}
 }
 \value{
-The option's value.
+The option's value. If invoked with no arguments (\code{options_sift()}),
+prints the status of all options to the console and returns \code{NULL}.
 }
 \description{
 \itemize{
@@ -25,21 +26,24 @@ a summary that is hundreds of columns long.
 \itemize{
 \item Running summary statistics on very large dataframes (hundreds of columns, millions
 of rows) can take a long time. This option controls the point at which \code{\link[=sift]{sift()}}
-decides that a column has too much data in it to use as-is, and starts randomly
-sampling from it instead. For any dataframe with \code{nrow() <= guessmax}, the entirety
+decides that a dataframe has too many rows to use as-is, and starts randomly
+sampling from it instead.
+\item For any dataframe with \code{nrow() <= guessmax}, the entirety
 of each column will be used for summary stats like "Missing \%" and "Peek at
-unique values". Above this row count, \code{guessmax} elements of each column will be
+unique values". Above this row count, \code{n = guessmax} elements of each column will be
 randomly sampled without replacement to make these stats, and a warning glyph
-will be shown alongside those stats.
+will be shown alongside those stats to show that they were estimated.
 }
 }
 }
 \examples{
-# options_sift("sift_limit")  # Returns the option's current value
+\dontrun{
+options_sift("sift_limit")  # Returns the option's current value
 
-# options_sift("sift_limit", 100)  # Change the value to something else.
+options_sift("sift_limit", 100)  # Change the value to something else.
 
-# Options set in this function are set in R's options() interface
-# options("sift_limit")
-# getOption("sift_limit")
+# Options set in this function are set in R's [options()] interface
+options("sift_limit")
+getOption("sift_limit")
+}
 }
