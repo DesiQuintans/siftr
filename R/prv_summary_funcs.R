@@ -41,8 +41,8 @@ some_uniques <- function(x) {
     uniques <- uniques[charlen <= 500]  # All elements until the 500th character.
 
     return(trimws(paste(pool$marker,
-                     cli::ansi_collapse(uniques, width = Inf,
-                                        style = "head", last = ", "))))
+                     cli::ansi_collapse(uniques, width = Inf, style = "head",
+                                        sep = " | ", last = " | "))))
 }
 
 
