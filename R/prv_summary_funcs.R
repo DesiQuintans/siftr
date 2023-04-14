@@ -15,6 +15,14 @@ some_uniques <- function(x) {
         x <- haven_to_factor(x)
     }
 
+    # If the thing is a factor, then its unique values are its levels.
+    if (has_class(x, "factor")) {
+        return(trimws(cli::ansi_collapse(levels(x), width = Inf, style = "head",
+                                         sep = " | ", last = " | ")))
+    }
+
+    # Non-factor vectors need to have their unique values worked out.
+
     # 1. Sample elements from the variable.
     pool <- should_approx(x)
 

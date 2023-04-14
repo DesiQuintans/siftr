@@ -1,6 +1,7 @@
 # unreleased
 
 - CHANGED
+    - Since the levels of a factor already represent all of its possible unique values, `some_uniques()` just returns that if the variable is a factor rather than sampling it to get its unique values.
     - `save_dictionary()` generates factor files for each unique factor in the dataframe now, according to the `tsv2label` spec.
     
     
