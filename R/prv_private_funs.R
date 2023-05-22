@@ -76,7 +76,7 @@ fuzzy_needle <- function(vec) {
 
 
 has_class <- function(obj, classname) {
-    classname %in% class(obj)
+    any(classname %in% class(obj))
 }
 
 
