@@ -2,28 +2,86 @@
 
 # Randomly choose and show some unique values from a variable.
 #
-#
+# This does some clever stuff depending on the class of the variable.
 #
 # @param x (Vector) A vector.
 #
 # @return A Character string.
 # @md
 some_uniques <- function(x) {
+    # ---- Special cases -------------------------------------------------------
+
+    # Sampling unique values can be expensive for big data. Many variable types
+    # can be specially handled for efficiency.
+
+    # ---- For Factors, use their levels ----
+
     # If it's a haven_labelled vector, I want to show it as a factor that
     # has both the values and the labels together.
     if (has_class(x, "haven_labelled")) {
         x <- haven_to_factor(x)
     }
 
-    # If the thing is a factor, then its unique values are its levels.
-    if (has_class(x, "factor")) {
+    # If the thing is a factor, then its unique values are its levels. All levels
+    # should be returned.
+    if (is.factor(x)) {
         return(trimws(cli::ansi_collapse(levels(x), width = Inf, style = "head",
                                          sep = " | ", last = " | ")))
     }
 
-    # Non-factor vectors need to have their unique values worked out.
+    # ---- For Logicals, use primitive functions ----
 
-    # 1. Sample elements from the variable.
+    if (is.logical(x)) {
+        # Fast unique for logical vectors using primitive functions.
+        # This does not create any copies.
+        #
+        # l <- sample(c(T, F, NA), size = 6e6, replace = TRUE)
+        #   expression             min median `itr/sec` mem_alloc `gc/sec` n_itr
+        #   <bch:expr>         <bch:t> <bch:>     <dbl> <bch:byt>    <dbl> <int>
+        # 1 unique(l)           30.1ms 32.4ms      30.6    22.9MB     5.56    11
+        # 2 code below           1.9µs  2.4µs  366043.         0B     0    10000
+
+        # all(l) * 1  returns 1 if everything is TRUE (0 if there are FALSEs).
+        # anyNA() * 2 returns 2 if there are any NAs  (0 if no NAs).
+
+        return(
+            switch (as.character(sum(all(x, na.rm = TRUE) * 1, anyNA(x) * 2)),
+                    `0` = "TRUE | FALSE",       # 0 + 0 = 0 = TRUE FALSE
+                    `1` = "TRUE",               # 1 + 0 = 1 = TRUE
+                    `2` = "TRUE | FALSE | NA",  # 0 + 2 = 2 = TRUE FALSE NA
+                    `3` = "TRUE | NA"           # 1 + 2 = 3 = TRUE       NA
+            )
+        )
+    }
+
+    # ---- For Numerics, use the head() ----
+
+    if (is.numeric(x)) {
+        # Having numeric values in the haystack is not often helpful for
+        # searching. They're more useful in the peek, as a preview of what the
+        # column contains.
+        # unique(head(x)) meets this need AND doesn't create copies.
+
+        # test <- rnorm(1e6)
+        # bench::mark(a = unique(head(test)), b = sample(test, 6), c = test[sample.int(length(test), 6, useHash = TRUE)], check = FALSE)
+        #
+        #   expression      min   median `itr/sec` mem_alloc `gc/sec` n_itr  n_gc
+        #   <bch:expr> <bch:tm> <bch:tm>     <dbl> <bch:byt>    <dbl> <int> <dbl>
+        # 1 a             4.7µs    5.7µs   164957.        0B      0   10000     0
+        # 2 b           518.4µs  601.9µs     1621.    3.82MB     27.6   588    10
+        # 3 c             3.9µs    4.9µs   188942.    2.49KB      0   10000     0
+
+        pool <- should_approx(x)
+        uniques <- unique(head(x, n = min(length(x), options_sift("sift_guessmax"))))
+
+        return(trimws(paste(pool$marker,
+                        cli::ansi_collapse(uniques, width = Inf, style = "head",
+                                                                sep = " | ", last = " | "))))
+    }
+
+    # Other vectors need to have their unique values worked out.
+
+    # Sample elements from the variable.
     pool <- should_approx(x)
 
     uniques <- as.character(sample(unique(x[pool$indices])))
@@ -38,7 +96,7 @@ some_uniques <- function(x) {
     # smart to limit the length of this output anyway so that the haystack being searched
     # is not too long.
     charlen <- cumsum(nchar(uniques))   # Running count of character length
-    uniques <- uniques[charlen <= 500]  # All elements until the 500th character.
+    uniques <- uniques[charlen <= options_sift("sift_peeklength")]  # All elements until the nth character.
 
     return(trimws(paste(pool$marker,
                      cli::ansi_collapse(uniques, width = Inf, style = "head",

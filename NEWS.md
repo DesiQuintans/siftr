@@ -1,7 +1,7 @@
 # unreleased
 
 - CHANGED
-    - Since the levels of a factor already represent all of its possible unique values, `some_uniques()` just returns that if the variable is a factor rather than sampling it to get its unique values.
+    - `some_uniques()` has short-circuit routes for datatypes that don't need the full "random sampling to get a list of its unique values" treatment. So far this is: Factors, Logicals, and Numerics.
     - Changed "peek" separator to vertical bar `|` from comma `,` because some data may use commas within string values.
     - `save_dictionary()` generates factor files for each unique factor in the dataframe now, according to the `tsv2label` spec.
     - Sample  data (`mtcars_lab`) now has a list column added.
