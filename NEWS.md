@@ -11,6 +11,7 @@
     - Changed "peek" separator to vertical bar `|` from comma `,` because some data may use commas within string values.
     - `save_dictionary()` generates factor files for each unique factor in the dataframe now, according to the `tsv2label` spec.
     - Sample  data (`mtcars_lab`) now has a list column added.
+    - `should_approx()` now uses `sample.int()` with the `useHash` argument, which performed better than `sample()`.
     
     
 
