@@ -29,6 +29,9 @@
 # # Add a new column that is entirely NA
 # mtcars_lab$`this column all na` <- NA
 #
+# # Add a new column that is a list column
+# mtcars_lab$list_col <- replicate(nrow(mtcars_lab), list(sample(month.abb, size = 3)))
+#
 # # These var labels are set last because the per-column editing above would remove them if
 # # they had been set earlier.
 # mtcars_lab <-
@@ -45,21 +48,25 @@
 #                         am = "Transmission",
 #                         gear = "Number of forward gears",
 #                         carb = "Number of carburetors",
-#                         above_avg = "Faster than the average 1/4 mile lap times in this dataset.",
-#                         `this column all na` = "This column is entirely NA, and also named poorly"
+#                         above_avg = "Faster than the average 1/4 mile lap times in this dataset",
+#                         `this column all na` = "This column is entirely NA, and also named poorly",
+#                         list_col = "This is a column containing lists"
 #     )
 #
 # use_data(mtcars_lab, overwrite = TRUE)
 
 
 
-#' Labelled version of mtcars
+# ---- This documents mtcars_lab -----------------------------------------------
+
+#' Labelled version of mtcars for testing only
 #'
 #' This is `mtcars` with value labels, variable labels (in `vs` only), some transformation
-#' to factor (`car` and `am`), an added Logical column (`above_avg`), and an added column
-#' of all `NA`s (`this column all na`). I also added some `NA` values to `qsec`.
+#' to factor (`car` and `am`), an added Logical column (`above_avg`), an added column
+#' of all `NA`s with a non-syntactic name (`this column all na`), and an added column
+#' of lists (`list_col`). I also added some `NA` values to `qsec`.
 #'
-#' @format A dataframe with 13 columns and 32 rows.
+#' @format A dataframe with 15 columns and 32 rows.
 #'
 #' @source `mtcars`
 #' @md
