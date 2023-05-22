@@ -5,6 +5,7 @@
 
 - FIXED
     - `has_class()` can deal with multi-classed variables now.
+    - Row names are now discarded from generated dictionaries.
 
 - CHANGED
     - `some_uniques()` has short-circuit routes for datatypes that don't need the full "random sampling to get a list of its unique values" treatment. So far this is: Factors, Logicals, and Numerics.

@@ -52,6 +52,8 @@ build_dictionary <- function(DF, dictlist) {
             class       = codify(dct_classes),
             type        = codify(dct_types),
             haystack    = haystacks
+            haystack    = haystacks,
+            row.names   = NULL
         )
 
     dictlist[df_name] <- list(dictionary)
