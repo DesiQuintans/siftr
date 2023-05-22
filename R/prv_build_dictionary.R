@@ -23,7 +23,7 @@ build_dictionary <- function(DF, dictlist) {
     # Extra details for the data dictionary
     dct_type_strs <- sapply(DF, coltype)
     dct_ordered   <- sapply(DF, is.ordered)
-    dct_classes   <- sapply(DF, class)
+    dct_classes   <- sapply(DF, function(x) { paste(class(x), collapse = ", ") })
     dct_types     <- sapply(DF, typeof)
     dct_pct_miss  <- sapply(DF, function(col) { trunc((sum(is.na(col)) / length(col)) * 100) })
     dct_rand_uniq <- sapply(DF, some_uniques)
@@ -51,7 +51,6 @@ build_dictionary <- function(DF, dictlist) {
             fct_ordered = dct_ordered,
             class       = codify(dct_classes),
             type        = codify(dct_types),
-            haystack    = haystacks
             haystack    = haystacks,
             row.names   = NULL
         )

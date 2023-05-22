@@ -4,6 +4,7 @@
     - `options_sift()` gets a new option: `sift_peeklength`. This controls the approximate length of the `rand_unique` entries in the data dictionary, i.e. a list of unique values in each column. This "full peek" is used as part of the "haystack" that actually gets searched by `sift()`. It defaults to 3000 characters, but the final length increases when separators are added. Previously, a length limit of only 500 characters was hard-coded in. 3000 characters is about the length of a 1-page Word document at default settings.
 
 - FIXED
+    - Fixed a bug where columns that had multiple `class()` (e.g. `"labelled"` and `"integer"`) would create a dictionary with two entries per dataframe column.
     - `has_class()` can deal with multi-classed variables now.
     - Row names are now discarded from generated dictionaries.
 
