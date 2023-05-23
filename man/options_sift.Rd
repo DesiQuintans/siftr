@@ -4,7 +4,10 @@
 \alias{options_sift}
 \title{Set and get options related to how \code{\link[=sift]{sift()}} runs.}
 \usage{
-options_sift(key = c("sift_limit", "sift_guessmax"), val = NULL)
+options_sift(
+  key = c("sift_limit", "sift_guessmax", "sift_peeklength"),
+  val = NULL
+)
 }
 \arguments{
 \item{key}{(String) The name of an option.}
@@ -19,20 +22,32 @@ prints the status of all options to the console and returns \code{NULL}.
 \itemize{
 \item \code{sift_limit} (Integer; default \code{25})
 \itemize{
-\item How many matches should \code{\link[=sift]{sift()}} print? This saves you from accidentally printing
-a summary that is hundreds of columns long.
+\item How many matches should \code{\link[=sift]{sift()}} print? This saves you from locking up R
+by accidentally printing a summary that is thousands of columns long.
 }
 \item \code{sift_guessmax} (Integer; default \code{1000})
 \itemize{
-\item Running summary statistics on very large dataframes (hundreds of columns, millions
-of rows) can take a long time. This option controls the point at which \code{\link[=sift]{sift()}}
-decides that a dataframe has too many rows to use as-is, and starts randomly
-sampling from it instead.
+\item Running summary statistics on very large dataframes (hundreds of columns,
+millions of rows) can take a long time. This option controls the point at
+which \code{\link[=sift]{sift()}} decides that a dataframe has too many rows to use as-is,
+and starts randomly sampling from it instead.
 \item For any dataframe with \code{nrow() <= guessmax}, the entirety
-of each column will be used for summary stats like "Missing \%" and "Peek at
-unique values". Above this row count, \code{n = guessmax} elements of each column will be
-randomly sampled without replacement to make these stats, and a warning glyph
-will be shown alongside those stats to show that they were estimated.
+of each column will be used for summary stats like "Missing \%" and "Peek
+at unique values". Above this row count, \code{n = guessmax} elements of each
+column will be randomly sampled without replacement to make these stats,
+and a warning glyph will be shown alongside those stats to show that they
+were estimated.
+\item Factor variables are never sampled; their levels are used in full.
+}
+\item \code{sift_peeklength} (Integer; default \code{3000})
+\itemize{
+\item When \code{\link[=sift]{sift()}} creates a dictionary, it generates a "peek" that previews
+the unique values of each column. You are only shown a small part of that
+peek in query results, but the full peek is used to search through the
+dictionary. This option controls how long (in characters) this full peek
+is allowed to be. The practical maximum is around 30 thousand characters.
+The default of 3000 characters is about as long as a 1-page Word document
+at default settings.
 }
 }
 }
