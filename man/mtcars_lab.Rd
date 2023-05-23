@@ -3,9 +3,9 @@
 \docType{data}
 \name{mtcars_lab}
 \alias{mtcars_lab}
-\title{Labelled version of mtcars}
+\title{Labelled version of mtcars for testing \code{siftr}}
 \format{
-A dataframe with 13 columns and 32 rows.
+A dataframe with 15 columns and 32 rows.
 }
 \source{
 \code{mtcars}
@@ -15,7 +15,8 @@ mtcars_lab
 }
 \description{
 This is \code{mtcars} with value labels, variable labels (in \code{vs} only), some transformation
-to factor (\code{car} and \code{am}), an added Logical column (\code{above_avg}), and an added column
-of all \code{NA}s (\verb{this column all na}). I also added some \code{NA} values to \code{qsec}.
+to factor (\code{car} and \code{am}), an added Logical column (\code{above_avg}), an added column
+of all \code{NA}s with a non-syntactic name (\verb{this column all na}), and an added column
+of lists (\code{list_col}). I also added some \code{NA} values to \code{qsec}.
 }
 \keyword{datasets}
