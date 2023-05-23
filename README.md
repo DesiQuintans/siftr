@@ -1,10 +1,23 @@
-# Sift
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/siftr)](https://CRAN.R-project.org/package=siftr)
+<!-- badges: end -->
 
-If you work as an analyst, you probably shift projects often and need to get oriented in a new dataset quickly. `sift` is an interactive tool that helps you find the column you need in a large dataframe using powerful 'fuzzy' searches.
+# Siftr
+
+If you work as an analyst, you probably shift projects often and need to get oriented in a new dataset quickly. `siftr` is an interactive tool that helps you find the column you need in a large dataframe using powerful 'fuzzy' searches.
 
 It was designed with medical, census, and survey data in mind, where dataframes can reach hundreds of columns and millions of rows.
 
-# Functions in `sift`
+# Installation
+
+``` r
+# CRAN release pending
+
+# Live development version from Github
+remotes::install_github("DesiQuintans/siftr")
+```
+
+# Functions in `siftr`
 
 | Function         | Description                                          |
 |:-----------------|:-----------------------------------------------------|
@@ -16,7 +29,7 @@ It was designed with medical, census, and survey data in mind, where dataframes 
 # Examples
 
 ``` r
-library(sift)
+library(siftr)
 data(starwars, package = "dplyr")
 ```
 
@@ -103,9 +116,9 @@ sift(starwars, color, "[a-z]{4}_")
 #> ✔ There were 2 results for query `(?=.*color)(?=.*[a-z]4_)`.
 ```
 
-## `sift` works best on labelled data
+## `siftr` works best on labelled data
 
-`sift` searches through these fields:
+`sift()` searches through these fields:
 
 1.  A column's name (`colnames(df)`)
 2.  Its label (`attr(col, "label")`; placed by many packages including `haven` and `labelled`)
@@ -113,9 +126,9 @@ sift(starwars, color, "[a-z]{4}_")
 4.  Its factor levels (`levels(col)`)
 5.  Its unique values (`unique(col)`), sampled at random for large datasets
 
-The more of these fields you can fill out, the more informative and powerful `sift` will be.
+The more of these fields you can fill out, the more informative and powerful `sift()` will be.
 
-`sift` pairs well with one of my other packages, [`tsv2label`][1], which can label, rename, and factorise a dataset using a plain text dictionary.
+`siftr` pairs well with one of my other packages, [`tsv2label`][1], which can label, rename, and factorise a dataset using a plain text dictionary.
 
 
 

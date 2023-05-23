@@ -1,12 +1,14 @@
-Package: sift
+Package: siftr
 Type: Package
-Title: Fuzzily search dataframe columns, labels, levels, and contents to find useful variables
-Version: 0.3.0
+Title: Fuzzily Search a Dataframe to Find Relevant Columns
+Version: 1.0.0
 Author: Desi Quintans
 Maintainer: Desi Quintans <science@desiquintans.com>
-Description: Fuzzily search dataframe column names, labels, factor levels, and unique values
-    to find which columns contain the variables you need. Designed for use with large 
-    dataframes that can span thousands of columns and millions of rows.
+Description: Analysts who change projects frequently know that it can be hard
+    to find the right column in an unfamiliar dataframe, especially when the 
+    dataframe spans hundreds of columns and millions of rows. 'Siftr' is an 
+    interactive tool that finds relevant columns by fuzzily searching through 
+    a dataframe's column names, labels, factor levels, and unique values.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
