@@ -54,7 +54,7 @@ some_uniques <- function(x) {
         )
     }
 
-    # ---- For Numerics, use the head() ----
+    # ---- For Numerics, use the head ----
 
     if (is.numeric(x)) {
         # Having numeric values in the haystack is not often helpful for
@@ -72,11 +72,11 @@ some_uniques <- function(x) {
         # 3 c             3.9µs    4.9µs   188942.    2.49KB      0   10000     0
 
         pool <- should_approx(x)
-        uniques <- unique(head(x, n = min(length(x), options_sift("sift_guessmax"))))
+        uniques <- unique(x[1:min(length(x), options_sift("sift_guessmax"))])
 
         return(trimws(paste(pool$marker,
                         cli::ansi_collapse(uniques, width = Inf, style = "head",
-                                                                sep = " | ", last = " | "))))
+                                           sep = " | ", last = " | "))))
     }
 
     # Other vectors need to have their unique values worked out.
