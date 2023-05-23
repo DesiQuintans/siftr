@@ -119,12 +119,12 @@ closure.sift <- function() {
 }
 
 
-#' Fuzzily search dataframe column names, labels, and factor levels to find variables
+#' Find relevant variables in a dataframe using fuzzy searches
 #'
-#' When working with dataframes that are hundreds of columns wide, it can be hard to find
-#' which column contains the variable that you need. This function gives you interactive,
-#' flexible searching through a dataframe, suggesting columns and some basic summary stats
-#' about what they contain.
+#' It can be hard to find the right column in a dataframe with hundreds or thousands of
+#' columns. This function gives you interactive, flexible searching through a dataframe,
+#' suggesting columns that are relevant to your query and showing some basic summary
+#' stats about what they contain.
 #'
 #' @param .df (Dataframe) A dataframe to search through.
 #' @param ... (Dots) Search query. See Details for more information.
@@ -138,12 +138,12 @@ closure.sift <- function() {
 #' @details You have two ways to search with `sift()`: _fuzzy search_ or _look-around search_.
 #'
 #' - **Fuzzy search** lets you get results that are close, but not exact, matches to your
-#'    query. For example, `"cars"` can match `"cats"`. This is useful because real-world
-#'    labelling is not always perfect; a query for `"baseline"` will match `"baseline"`
-#'    or `"base line` or even OCR errors or typos like `"basellne"`. Fuzzy search needs to
+#'    query. For example, `"cars"` can match `cats`. This is useful because real-world
+#'    labelling is not always perfect; a query for `"baseline"` will match `baseline`
+#'    or `base line` or even OCR errors or typos like `basellne`. Fuzzy search needs to
 #'    be opted-into by setting the `.dist` argument to a value > 0.
 #' - **Look-around search** matches keywords regardless of the order you give them. This
-#'    means that you can ask for `cow, number` and get a match for `"number of cows"`.
+#'    means that you can ask for `cow, number` and get a match for `number of cows`.
 #'    This is useful when you have an idea of what keywords should be in a variable label,
 #'    but not how those keywords are actually used or phrased. _Note that this is not
 #'    a fuzzy search, so the keywords have to match exactly._
@@ -154,19 +154,23 @@ closure.sift <- function() {
 #' - **Pass one string:** Fuzzy search with a regular expression. Example: `sift(df, "cow.*?number", .dist = 1)`
 #' - **Pass one bare name or string without changing `.dist`:** Non-fuzzy search. Example: `sift(df, cow)`
 #' - **Pass more than one item:** (either as a vector or in multiple elements of `...`) Look-around
-#'      non-fuzzy search with fixed strings.
+#'      non-fuzzy search with fixed strings. Example: `dift(df, preferred, "cow", name)`
 #'
-#' @return If `...` is empty, return the full data dictionary for `df`. If the query was
-#'      matched, invisibly return the rows of the data dictionary that matched. If the
-#'      query was not matched, invisibly return the data dictionary with no rows (but
-#'      all columns).
+#' @return
+#' Invisibly returns a dataframe. The contents of that dataframe depend on the query:
+#'
+#' - If `...` is empty, the full data dictionary for `df` is returned.
+#' - If the query was matched, only returns matching rows of the data dictionary.
+#' - If the query was not matched, return no rows of the dictionary (but all columns).
 #'
 #' @export
 #'
 #' @examples
-#' # sift(mtcars_lab)
-#' # sift(mtcars_lab, mileage)
-#' # sift(mtcars_lab, "date|time", arrival)
+#' \dontrun{
+#' sift(mtcars_lab)
+#' sift(mtcars_lab, mileage)
+#' sift(mtcars_lab, "date|time", arrival)
+#' }
 #'
 #' @md
 sift <- closure.sift()
