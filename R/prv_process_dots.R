@@ -15,9 +15,8 @@ nse_dots <- function(...) {
     } else {
         # Otherwise, process dots into a Character vector.
         dots <- as.character(eval(substitute(alist(...))))
+        dots <- gsub("\\s", "", dots)  # Closes https://github.com/DesiQuintans/librarian/issues/13
     }
-
-    dots <- gsub("\\s", "", dots)  # Closes https://github.com/DesiQuintans/librarian/issues/13
 
     dots <- unique(dots)
     dots <- dots[nchar(dots) > 0]
