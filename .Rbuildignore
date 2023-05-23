@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 sift demo console input.ini
+^cran-comments\.md$
