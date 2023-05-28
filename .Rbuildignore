@@ -3,3 +3,4 @@
 ^LICENSE\.md$
 sift demo console input.ini
 ^cran-comments\.md$
+^CRAN-SUBMISSION$
