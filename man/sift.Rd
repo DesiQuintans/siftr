@@ -9,15 +9,17 @@ sift(.df, ..., .dist = 0, .rebuild = FALSE)
 \arguments{
 \item{.df}{(Dataframe) A dataframe to search through.}
 
-\item{...}{(Dots) Search query. See Details for more information.}
+\item{...}{(Dots) Search query. Case-insensitive. See Details for more information.}
 
 \item{.dist}{(Numeric) The maximum distance allowed for a match when searching
 fuzzily. See \code{max.distance} in \code{\link[=agrep]{agrep()}}. In short: a proportion is the fraction of
 the pattern length that can be flexible (e.g. \code{0.1} = 10\% of the pattern length),
-whereas whole integers > 0 are the number of characters that can be flexible.}
+whereas whole integers > 0 are the number of characters that can be flexible. \code{0} is
+an exact search.}
 
 \item{.rebuild}{(Logical) If \code{TRUE}, then force a dictionary rebuild even if it normally
-would not be triggered.}
+would not be triggered. Rebuilds are triggered by changes to a dataframe's dimensions,
+its columns (names, types, order), and/or its count of \code{NA}s in each column.}
 }
 \value{
 Invisibly returns a dataframe. The contents of that dataframe depend on the query:
@@ -34,34 +36,46 @@ suggesting columns that are relevant to your query and showing some basic summar
 stats about what they contain.
 }
 \details{
-You have two ways to search with \code{sift()}: \emph{fuzzy search} or \emph{look-around search}.
+You have three ways to search with \code{sift()}: \emph{exact search}, \emph{fuzzy search}, or
+\emph{orderless search} (also called \emph{look-around search}).
 \itemize{
-\item \strong{Fuzzy search} lets you get results that are close, but not exact, matches to your
-query. For example, \code{"cars"} can match \code{cats}. This is useful because real-world
-labelling is not always perfect; a query for \code{"baseline"} will match \code{baseline}
-or \verb{base line} or even OCR errors or typos like \code{basellne}. Fuzzy search needs to
-be opted-into by setting the \code{.dist} argument to a value > 0.
-\item \strong{Look-around search} matches keywords regardless of the order you give them. This
+\item \strong{Exact search} looks for exact matches to your query. For example, searching for
+\code{"weight of"} will only match \verb{weight of}.
+\item \strong{Fuzzy search} gives you results that are close, but not exact, matches to your
+query. This is useful because real-world labelling is not always consistent or even
+correct, so using a fuzzy search for \code{"baseline"} will helpfully match \code{baseline} or
+\verb{base line} or even OCR errors or typos like \code{basellne}.
+\item \strong{Orderless search} matches keywords regardless of the order you give them. This
 means that you can ask for \verb{cow, number} and get a match for \verb{number of cows}.
 This is useful when you have an idea of what keywords should be in a variable label,
 but not how those keywords are actually used or phrased. \emph{Note that this is not
 a fuzzy search, so the keywords have to match exactly.}
 }
 
-The kind of search that is performed depends on how you supply your query to \code{...}:
+The search that's performed depends on \code{...} and \code{.dist}:
 \itemize{
-\item \strong{Pass one bare name:} Fuzzy search with a fixed string. Example: \code{sift(df, cow, .dist = 1)}
-\item \strong{Pass one string:} Fuzzy search with a regular expression. Example: \code{sift(df, "cow.*?number", .dist = 1)}
-\item \strong{Pass one bare name or string without changing \code{.dist}:} Non-fuzzy search. Example: \code{sift(df, cow)}
-\item \strong{Pass more than one item:} (either as a vector or in multiple elements of \code{...}) Look-around
-non-fuzzy search with fixed strings. Example: \code{dift(df, preferred, "cow", name)}
+\item \strong{Orderless search} is \emph{always} used when you pass more than one query term into \code{...}.
+\item \strong{Exact search} is done when \code{.dist = 0}.
+\item \strong{Fuzzy search} must be opted-into by setting the \code{.dist} argument to a value > 0. It
+is ignored in orderless searching.
 }
 }
 \examples{
 \donttest{
-sift(mtcars_lab)
-sift(mtcars_lab, mileage)
-sift(mtcars_lab, "date|time", arrival)
+sift(mtcars_lab)  # Builds a dictionary without searching.
+
+sift(mtcars_lab, .)  # Show everything up to the print limit (by default, 25 matches).
+
+sift(mtcars_lab, mileage)  # Exact search for "mileage".
+sift(mtcars_lab, "above avg", .dist = 1)  # Fuzzy search (here, space -> underscore).
+
+sift(mtcars_lab, "na", "column")  # Orderless searches are always exact.
+
+sift(mtcars_lab, "date|time")  # Regular expression
+sift(mtcars_lab, "cyl|gear", number)  # Orderless search with regular expression
 }
 
+}
+\seealso{
+\code{\link[=save_dictionary]{save_dictionary()}}, \code{\link[=options_sift]{options_sift()}}
 }

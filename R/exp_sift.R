@@ -137,34 +137,37 @@ closure.sift <- function() {
 #' stats about what they contain.
 #'
 #' @param .df (Dataframe) A dataframe to search through.
-#' @param ... (Dots) Search query. See Details for more information.
+#' @param ... (Dots) Search query. Case-insensitive. See Details for more information.
 #' @param .dist (Numeric) The maximum distance allowed for a match when searching
 #'      fuzzily. See `max.distance` in [agrep()]. In short: a proportion is the fraction of
 #'      the pattern length that can be flexible (e.g. `0.1` = 10% of the pattern length),
-#'      whereas whole integers > 0 are the number of characters that can be flexible.
+#'      whereas whole integers > 0 are the number of characters that can be flexible. `0` is
+#'      an exact search.
 #' @param .rebuild (Logical) If `TRUE`, then force a dictionary rebuild even if it normally
-#'      would not be triggered.
+#'      would not be triggered. Rebuilds are triggered by changes to a dataframe's dimensions,
+#'      its columns (names, types, order), and/or its count of `NA`s in each column.
 #'
-#' @details You have two ways to search with `sift()`: _fuzzy search_ or _look-around search_.
+#' @details You have three ways to search with `sift()`: _exact search_, _fuzzy search_, or
+#' _orderless search_ (also called _look-around search_).
 #'
-#' - **Fuzzy search** lets you get results that are close, but not exact, matches to your
-#'    query. For example, `"cars"` can match `cats`. This is useful because real-world
-#'    labelling is not always perfect; a query for `"baseline"` will match `baseline`
-#'    or `base line` or even OCR errors or typos like `basellne`. Fuzzy search needs to
-#'    be opted-into by setting the `.dist` argument to a value > 0.
-#' - **Look-around search** matches keywords regardless of the order you give them. This
+#' - **Exact search** looks for exact matches to your query. For example, searching for
+#'    `"weight of"` will only match `weight of`.
+#' - **Fuzzy search** gives you results that are close, but not exact, matches to your
+#'    query. This is useful because real-world labelling is not always consistent or even
+#'    correct, so using a fuzzy search for `"baseline"` will helpfully match `baseline` or
+#'    `base line` or even OCR errors or typos like `basellne`.
+#' - **Orderless search** matches keywords regardless of the order you give them. This
 #'    means that you can ask for `cow, number` and get a match for `number of cows`.
 #'    This is useful when you have an idea of what keywords should be in a variable label,
 #'    but not how those keywords are actually used or phrased. _Note that this is not
 #'    a fuzzy search, so the keywords have to match exactly._
 #'
-#' The kind of search that is performed depends on how you supply your query to `...`:
+#' The search that's performed depends on `...` and `.dist`:
 #'
-#' - **Pass one bare name:** Fuzzy search with a fixed string. Example: `sift(df, cow, .dist = 1)`
-#' - **Pass one string:** Fuzzy search with a regular expression. Example: `sift(df, "cow.*?number", .dist = 1)`
-#' - **Pass one bare name or string without changing `.dist`:** Non-fuzzy search. Example: `sift(df, cow)`
-#' - **Pass more than one item:** (either as a vector or in multiple elements of `...`) Look-around
-#'      non-fuzzy search with fixed strings. Example: `dift(df, preferred, "cow", name)`
+#' - **Orderless search** is _always_ used when you pass more than one query term into `...`.
+#' - **Exact search** is done when `.dist = 0`.
+#' - **Fuzzy search** must be opted-into by setting the `.dist` argument to a value > 0. It
+#'     is ignored in orderless searching.
 #'
 #' @return
 #' Invisibly returns a dataframe. The contents of that dataframe depend on the query:
@@ -173,13 +176,23 @@ closure.sift <- function() {
 #' - If the query was matched, only returns matching rows of the data dictionary.
 #' - If the query was not matched, return no rows of the dictionary (but all columns).
 #'
+#' @seealso [siftr::save_dictionary()], [siftr::options_sift()]
+#'
 #' @export
 #'
 #' @examples
 #' \donttest{
-#' sift(mtcars_lab)
-#' sift(mtcars_lab, mileage)
-#' sift(mtcars_lab, "date|time", arrival)
+#' sift(mtcars_lab)  # Builds a dictionary without searching.
+#'
+#' sift(mtcars_lab, .)  # Show everything up to the print limit (by default, 25 matches).
+#'
+#' sift(mtcars_lab, mileage)  # Exact search for "mileage".
+#' sift(mtcars_lab, "above avg", .dist = 1)  # Fuzzy search (here, space -> underscore).
+#'
+#' sift(mtcars_lab, "na", "column")  # Orderless searches are always exact.
+#'
+#' sift(mtcars_lab, "date|time")  # Regular expression
+#' sift(mtcars_lab, "cyl|gear", number)  # Orderless search with regular expression
 #' }
 #'
 #' @md
