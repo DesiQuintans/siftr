@@ -39,3 +39,5 @@ Thank you for your time and feedback! Paraphrased reviewer comments are prefixed
 > Please add small executable examples in your Rd-files to illustrate the use of the exported function but also enable automatic testing.
 
     Both fixed.
+
+Thanks again!
