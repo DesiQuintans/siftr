@@ -36,9 +36,9 @@ closure.sift <- function() {
 
         # ---- 2. Convert ... into a query and perform a search --------------------------
 
-        query <- nse_dots(...)
+        orig_query <- nse_dots(...)
 
-        if (identical(query, character(0))) {
+        if (identical(orig_query, character(0))) {
             # If dots is empty, then return the dictionary itself.
 
             cli::cli_alert_info(msg_sift("report dims", 1,
@@ -48,9 +48,11 @@ closure.sift <- function() {
             cli::cat_line()
 
             return(invisible(dict))
-        } else if (length(query) == 1) {
+        } else if (length(orig_query) == 1) {
             # If dots has just one item in it, then treat it as an agrep() search, which
             # is possibly a regular expression.
+
+            query <- orig_query
 
             candidates <-
                 agrep(query, dict$haystack, ignore.case = TRUE, value = FALSE,
@@ -59,7 +61,7 @@ closure.sift <- function() {
             # But if dots has more than one element, then use it to build a fuzzy search
             # with look-around.
 
-            query <- fuzzy_needle(query)  # E.g. (?=.*gallon)(?=.*mileage)
+            query <- fuzzy_needle(orig_query)  # E.g. (?=.*gallon)(?=.*mileage)
 
             candidates <-
                 # Fuzzy needle requires PERL regex, which agrep and aregexc don't support.
@@ -91,7 +93,10 @@ closure.sift <- function() {
                 cli::cli_alert_info(msg_sift("no matches", 2), wrap = TRUE)
             }
 
-            cli::cli_alert_info(msg_sift("no matches", 3, .dist), wrap = TRUE)
+            if (length(orig_query) == 1) {
+                cli::cli_alert_info(msg_sift("no matches", 3, .dist), wrap = TRUE)
+            }
+
             cli::cat_line()
         } else {
             # There's at least one match. I use display_row() to print every row of the return dataframe.

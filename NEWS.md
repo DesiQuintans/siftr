@@ -1,7 +1,11 @@
-# unreleased
+# siftr 1.0.1
+
 
 - FIXED
     - Numeric vectors with `NA`s give a correct peek of their non-`NA` contents, rather than being reported as `NA` entirely.
+
+- CHANGED
+    - Suggestion to increase `.dist` in the case of no matches is now hidden for orderless searches.
 
 
 
