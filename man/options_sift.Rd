@@ -52,13 +52,14 @@ at default settings.
 }
 }
 \examples{
-\dontrun{
+\donttest{
 options_sift("sift_limit")  # Returns the option's current value
-
 options_sift("sift_limit", 100)  # Change the value to something else.
+options_sift("sift_limit", 25)  # Change it back.
 
-# Options set in this function are set in R's [options()] interface
+# Options set in this function are set in R's options() interface
 options("sift_limit")
 getOption("sift_limit")
 }
+
 }

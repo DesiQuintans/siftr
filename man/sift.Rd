@@ -58,7 +58,7 @@ non-fuzzy search with fixed strings. Example: \code{dift(df, preferred, "cow", n
 }
 }
 \examples{
-\dontrun{
+\donttest{
 sift(mtcars_lab)
 sift(mtcars_lab, mileage)
 sift(mtcars_lab, "date|time", arrival)

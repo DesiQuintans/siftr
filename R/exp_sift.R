@@ -166,7 +166,7 @@ closure.sift <- function() {
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' sift(mtcars_lab)
 #' sift(mtcars_lab, mileage)
 #' sift(mtcars_lab, "date|time", arrival)

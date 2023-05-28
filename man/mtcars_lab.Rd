@@ -19,4 +19,9 @@ to factor (\code{car} and \code{am}), an added Logical column (\code{above_avg})
 of all \code{NA}s with a non-syntactic name (\verb{this column all na}), and an added column
 of lists (\code{list_col}). I also added some \code{NA} values to \code{qsec}.
 }
+\examples{
+head(mtcars_lab)
+lapply(mtcars_lab, typeof)
+
+}
 \keyword{datasets}

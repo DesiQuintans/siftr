@@ -68,6 +68,10 @@
 #'
 #' @format A dataframe with 15 columns and 32 rows.
 #'
+#' @examples
+#' head(mtcars_lab)
+#' lapply(mtcars_lab, typeof)
+#'
 #' @source `mtcars`
 #' @md
 "mtcars_lab"

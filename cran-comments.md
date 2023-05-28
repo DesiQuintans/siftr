@@ -35,3 +35,7 @@ Thank you for your time and feedback! Paraphrased reviewer comments are prefixed
 
     Fixed. save_dictionary() now throws an error if `path` is not manually specified by the user, and the function's Example writes to `tempdir()`. 
 
+> \dontrun{} should only be used if the example really cannot be executed [...] Please replace \dontrun with \donttest.
+> Please add small executable examples in your Rd-files to illustrate the use of the exported function but also enable automatic testing.
+
+    Both fixed.

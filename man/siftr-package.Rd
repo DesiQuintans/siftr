@@ -5,6 +5,18 @@
 \alias{{pkgname}-package}
 \title{siftr: Fuzzily Search a Dataframe to Find Relevant Columns}
 \description{
-Analysts who change projects frequently know that it can be hard to find the right column in an unfamiliar dataframe, especially when the dataframe spans hundreds of columns and millions of rows. 'Siftr' is an interactive tool that finds relevant columns by fuzzily searching through a dataframe's column names, labels, factor levels, and unique values.
+Analysts who change projects frequently know that it can be hard to find the right column in an unfamiliar dataframe, especially when the dataframe spans hundreds of columns and millions of rows. 'siftr' is an interactive tool that finds relevant columns by fuzzily searching through a dataframe's column names, labels, factor levels, and unique values.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/DesiQuintans/siftr}
+  \item Report bugs at \url{https://github.com/DesiQuintans/siftr/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Desi Quintans \email{science@desiquintans.com} (\href{https://orcid.org/0000-0003-3356-0293}{ORCID}) [copyright holder]
+
 }
 \keyword{internal}
