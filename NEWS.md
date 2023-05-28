@@ -1,3 +1,10 @@
+# unreleased
+
+- FIXED
+    - Numeric vectors with `NA`s give a correct peek of their non-`NA` contents, rather than being reported as `NA` entirely.
+
+
+
 # siftr 1.0.0
 
 - Renamed package to `siftr` to avoid name collision with existing `sift` package on CRAN that I somehow missed.

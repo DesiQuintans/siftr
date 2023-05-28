@@ -73,6 +73,7 @@ some_uniques <- function(x) {
 
         pool <- should_approx(x)
         uniques <- unique(x[1:min(length(x), options_sift("sift_guessmax"))])
+        uniques <- uniques[!is.na(uniques)]  # cli::ansi_collapse() cannot handle NAs.
 
         return(trimws(paste(pool$marker,
                         cli::ansi_collapse(uniques, width = Inf, style = "head",
