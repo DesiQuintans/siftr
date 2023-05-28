@@ -14,6 +14,8 @@ Description: Analysts who change projects frequently know that it can be hard
     interactive tool that finds relevant columns by fuzzily searching through
     a dataframe's column names, labels, factor levels, and unique values.
 License: MIT + file LICENSE
+URL: https://github.com/DesiQuintans/siftr
+BugReports: https://github.com/DesiQuintans/siftr/issues
 Encoding: UTF-8
 LazyData: true
 Depends: 
