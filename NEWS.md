@@ -1,5 +1,7 @@
 # siftr 1.0.1
 
+- ADDED
+    - User is now warned if `.dist` is used with an orderless search (because `.dist` is ignored in those cases).
 
 - FIXED
     - Numeric vectors with `NA`s give a correct peek of their non-`NA` contents, rather than being reported as `NA` entirely.

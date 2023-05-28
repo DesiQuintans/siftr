@@ -30,7 +30,10 @@ msg_sift <- function(entry, i = 1, ...) {
         `over limit`  = c("Only %1$s of them %2$s printed, set by options_sift(\"sift_limit\", %1$s)"),
 
         `not option`  = c("'%s' is not one of sift's options.",
-                          "Did you mean %s?")
+                          "Did you mean %s?"),
+
+        `dist_ignore` = c("An orderless search was performed, so '.dist = %.2f' was ignored.",
+                          "To remove this warning, either remove '.dist' or provide your query as a single character string.")
         )
     return(sprintf(text[[entry]][i], ...))
 }

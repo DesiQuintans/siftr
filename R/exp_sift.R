@@ -61,6 +61,11 @@ closure.sift <- function() {
             # But if dots has more than one element, then use it to build a fuzzy search
             # with look-around.
 
+            if (.dist > 0) {
+                cli::cli_warn(c("!" = msg_sift("dist_ignore", 1, .dist),
+                                "i" = msg_sift("dist_ignore", 2)))
+            }
+
             query <- fuzzy_needle(orig_query)  # E.g. (?=.*gallon)(?=.*mileage)
 
             candidates <-
