@@ -35,18 +35,12 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' save_dictionary(iris)
-#'
-#' ## Building dictionary for 'iris'. This only happens when it changes.
-#' ## Dictionary was built in 0.01 secs.
-#' ##
-#' ## Dictionary has 5 columns: Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, Species.
-#' ##
-#' ## Dictionary saved to 'C:/my_working_dir/iris_dictionary'.
+#' \donttest{
+#' save_dictionary(iris, path = tempdir())
 #' }
+#'
 #' @md
-save_dictionary <- function(df, path = getwd(), ...) {
+save_dictionary <- function(df, path = stop("'path' must be specified."), ...) {
     df_symb <- substitute(df)
     df_char <- deparse(df_symb)
 
@@ -118,7 +112,7 @@ save_dictionary <- function(df, path = getwd(), ...) {
                        sep = "\t", row.names = FALSE, qmethod = "double",
                        ...)
 
-    message("Dictionary saved to '", gsub("//", "/", save_path), "'.")
+    message("Dictionary saved to '", gsub("\\\\", "/", save_path), "'.")
 
     if (interactive()) {
         utils::browseURL(save_path)

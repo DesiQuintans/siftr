@@ -4,7 +4,7 @@
 \alias{save_dictionary}
 \title{Save a dataframe's dictionary to a file}
 \usage{
-save_dictionary(df, path = getwd(), ...)
+save_dictionary(df, path = stop("'path' must be specified."), ...)
 }
 \arguments{
 \item{df}{(Dataframe) The dataframe whose dictionary you want to save.}
@@ -44,14 +44,8 @@ you need to relabel it every time.
 }
 }
 \examples{
-\dontrun{
-save_dictionary(iris)
-
-## Building dictionary for 'iris'. This only happens when it changes.
-## Dictionary was built in 0.01 secs.
-##
-## Dictionary has 5 columns: Sepal.Length, Sepal.Width, Petal.Length, Petal.Width, Species.
-##
-## Dictionary saved to 'C:/my_working_dir/iris_dictionary'.
+\donttest{
+save_dictionary(iris, path = tempdir())
 }
+
 }
