@@ -2,20 +2,42 @@
 [![CRAN status](https://www.r-pkg.org/badges/version/siftr)](https://CRAN.R-project.org/package=siftr)
 <!-- badges: end -->
 
+
+
 # Siftr
 
 If you work as an analyst, you probably shift projects often and need to get oriented in a new dataset quickly. `siftr` is an interactive tool that helps you find the column you need in a large dataframe using powerful 'fuzzy' searches.
 
 It was designed with medical, census, and survey data in mind, where dataframes can reach hundreds of columns and millions of rows.
 
+
+
 # Installation
 
 ``` r
-# CRAN release pending
+# Install it from CRAN
+install.packages("siftr")
 
-# Live development version from Github
+# Or install the live development version from Github
 remotes::install_github("DesiQuintans/siftr")
 ```
+
+
+## Starting `siftr` with every R session
+
+For convenience, you can add `siftr` to your _.Rprofile_ so that it is immediately available when you start R.
+
+``` r
+file.edit(file.path("~", ".Rprofile"))  # Opens your global .Rprofile for editing.
+```
+
+Add this line and save it:
+
+``` r
+options(defaultPackages = c('datasets', 'utils', 'grDevices', 'graphics', 'stats', 'methods', 'siftr'))
+```
+
+
 
 # Functions in `siftr`
 
@@ -25,6 +47,8 @@ remotes::install_github("DesiQuintans/siftr")
 | `save_dictionary()` | Save the data dictionary for use with [`tsv2label`][1] |
 | `options_sift()` | Get and set options related to how `sift` functions. |
 | `mtcars_lab`     | A dataset bundled with the package for testing.      |
+
+
 
 # Examples
 
@@ -115,6 +139,7 @@ sift(starwars, color, "[a-z]{4}_")
 #> 
 #> ✔ There were 2 results for query `(?=.*color)(?=.*[a-z]4_)`.
 ```
+
 
 ## `siftr` works best on labelled data
 
