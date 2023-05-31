@@ -4,7 +4,7 @@
 
 
 
-# Siftr
+# `siftr`
 
 If you work as an analyst, you probably shift projects often and need to get oriented in a new dataset quickly. `siftr` is an interactive tool that helps you find the column you need in a large dataframe using powerful 'fuzzy' searches.
 
