@@ -50,6 +50,14 @@ options(defaultPackages = c('datasets', 'utils', 'grDevices', 'graphics', 'stats
 
 
 
+# Ways of searching in `siftr`
+
+1. **Exact matching** with or without regular expressions
+2. **Fuzzy matching** with or without regular expressions
+3. **Orderless exact matching** with or without regular expressions 
+
+
+
 # Examples
 
 ``` r
@@ -57,7 +65,7 @@ library(siftr)
 data(starwars, package = "dplyr")
 ```
 
-By default, sift searches for exact matches in a column's names, labels, levels, and unique values. As a convenience, you can type bare names in (i.e. `color` instead of `"color"`) for simple queries.
+By default, `sift()` searches for exact matches in a column's names, labels, levels, and unique values. As a convenience, you can type bare names in (i.e. `color` instead of `"color"`) for simple queries.
 
 ``` r
 sift(starwars, color)
@@ -77,6 +85,8 @@ sift(starwars, color)
 #> 
 #> ✔ There were 3 results for query `color`.
 ```
+
+As you can see, `sift()` returns lots of useful information about the variables it has found: The column number and name, its type, how much of it is `NA`/`NaN`, whether all of its values are the same, and a random peek at some of the column's unique values.
 
 The `.dist` argument opts-in to approximate searching. It can take an integer (the number of characters that can be flexibly matched) or a double between 0 and 1 (e.g. `0.25` = 25% of the query pattern's length can be flexibly matched).
 
