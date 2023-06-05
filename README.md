@@ -2,20 +2,42 @@
 [![CRAN status](https://www.r-pkg.org/badges/version/siftr)](https://CRAN.R-project.org/package=siftr)
 <!-- badges: end -->
 
-# Siftr
+
+
+# `siftr`
 
 If you work as an analyst, you probably shift projects often and need to get oriented in a new dataset quickly. `siftr` is an interactive tool that helps you find the column you need in a large dataframe using powerful 'fuzzy' searches.
 
 It was designed with medical, census, and survey data in mind, where dataframes can reach hundreds of columns and millions of rows.
 
+
+
 # Installation
 
 ``` r
-# CRAN release pending
+# Install it from CRAN
+install.packages("siftr")
 
-# Live development version from Github
+# Or install the live development version from Github
 remotes::install_github("DesiQuintans/siftr")
 ```
+
+
+## Starting `siftr` with every R session
+
+For convenience, you can add `siftr` to your _.Rprofile_ so that it is immediately available when you start R.
+
+``` r
+file.edit(file.path("~", ".Rprofile"))  # Opens your global .Rprofile for editing.
+```
+
+Add this line and save it:
+
+``` r
+options(defaultPackages = c('datasets', 'utils', 'grDevices', 'graphics', 'stats', 'methods', 'siftr'))
+```
+
+
 
 # Functions in `siftr`
 
@@ -26,6 +48,16 @@ remotes::install_github("DesiQuintans/siftr")
 | `options_sift()` | Get and set options related to how `sift` functions. |
 | `mtcars_lab`     | A dataset bundled with the package for testing.      |
 
+
+
+# Ways of searching in `siftr`
+
+1. **Exact matching** with or without regular expressions
+2. **Fuzzy matching** with or without regular expressions
+3. **Orderless exact matching** with or without regular expressions 
+
+
+
 # Examples
 
 ``` r
@@ -33,7 +65,7 @@ library(siftr)
 data(starwars, package = "dplyr")
 ```
 
-By default, sift searches for exact matches in a column's names, labels, levels, and unique values. As a convenience, you can type bare names in (i.e. `color` instead of `"color"`) for simple queries.
+By default, `sift()` searches for exact matches in a column's names, labels, levels, and unique values. As a convenience, you can type bare names in (i.e. `color` instead of `"color"`) for simple queries.
 
 ``` r
 sift(starwars, color)
@@ -53,6 +85,8 @@ sift(starwars, color)
 #> 
 #> ✔ There were 3 results for query `color`.
 ```
+
+As you can see, `sift()` returns lots of useful information about the variables it has found: The column number and name, its type, how much of it is `NA`/`NaN`, whether all of its values are the same, and a random peek at some of the column's unique values.
 
 The `.dist` argument opts-in to approximate searching. It can take an integer (the number of characters that can be flexibly matched) or a double between 0 and 1 (e.g. `0.25` = 25% of the query pattern's length can be flexibly matched).
 
@@ -115,6 +149,7 @@ sift(starwars, color, "[a-z]{4}_")
 #> 
 #> ✔ There were 2 results for query `(?=.*color)(?=.*[a-z]4_)`.
 ```
+
 
 ## `siftr` works best on labelled data
 
