@@ -45,7 +45,7 @@ you need to relabel it every time.
 }
 \examples{
 \donttest{
-save_dictionary(iris, path = tempdir())
+save_dictionary(CO2, path = tempdir())
 }
 
 }

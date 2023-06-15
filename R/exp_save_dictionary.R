@@ -36,7 +36,7 @@
 #'
 #' @examples
 #' \donttest{
-#' save_dictionary(iris, path = tempdir())
+#' save_dictionary(CO2, path = tempdir())
 #' }
 #'
 #' @md
@@ -77,8 +77,8 @@ save_dictionary <- function(df, path = stop("'path' must be specified."), ...) {
     # Create and write these dataframes
     for (i in seq_len(nrow(each_fct))) {
         utils::write.table(
-            data.frame(level = eval(str2lang(each_fct[i, ]$fct_lvl)),
-                       label = eval(str2lang(each_fct[i, ]$fct_lvl)),
+            data.frame(levels = eval(str2lang(each_fct[i, ]$fct_lvl)),
+                       labels = eval(str2lang(each_fct[i, ]$fct_lvl)),
                        ordered = each_fct[i, ]$fct_ordered,
                        stringsAsFactors = FALSE
             ),
@@ -93,11 +93,14 @@ save_dictionary <- function(df, path = stop("'path' must be specified."), ...) {
 
     # 4. Clean up final output for index.tsv -----------------------------------
 
+    # Add a column for renames
+    dict$rename <- ""
+
     # Only some columns are useful in a data dictionary
-    dict <- dict[, c("colnum", "varname", "var_lab", "type_str", "pct_miss", "pct_nonmiss", "fct_lvl")]
+    dict <- dict[, c("colnum", "varname", "rename", "var_lab", "fct_lvl", "type_str", "pct_miss", "pct_nonmiss")]
 
     # Some columns need to be renamed for tsv2label
-    colnames(dict) <- c("colnum", "name", "description", "type", "pct_missing", "pct_nonmissing", "factor_file")
+    colnames(dict) <- c("colnum", "name", "rename", "description", "factor_file", "type", "pct_missing", "pct_nonmissing")
 
     # Remove UTF-8 'x' in type_str; Excel doesn't open UTF-8 by default.
     dict$type <- gsub(cli::symbol$times, "x", dict$type)
