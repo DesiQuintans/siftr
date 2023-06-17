@@ -18,7 +18,8 @@ It was designed with medical, census, and survey data in mind, where dataframes 
 # Install it from CRAN
 install.packages("siftr")
 
-# Or install the live development version from Github
+# Or install the live development version from Github.
+# Want to know what this version has compared to CRAN? See 'NEWS.md' above.
 remotes::install_github("DesiQuintans/siftr")
 ```
 
