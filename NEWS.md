@@ -1,3 +1,13 @@
+# Github-installed in-development version (> 1.0.1)
+
+- ADDED
+    - save_dictionary() writes an empty `exclude` column to factor files.
+    
+- CHANGED
+    - save_dictionary() writes only one cell of the `ordered` column, to conform to what real-world users would do.
+
+
+
 # siftr 1.0.1
 
 - ADDED

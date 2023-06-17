@@ -76,10 +76,13 @@ save_dictionary <- function(df, path = stop("'path' must be specified."), ...) {
 
     # Create and write these dataframes
     for (i in seq_len(nrow(each_fct))) {
+        levels_vec <- eval(str2lang(each_fct[i, ]$fct_lvl))
+
         utils::write.table(
-            data.frame(levels = eval(str2lang(each_fct[i, ]$fct_lvl)),
-                       labels = eval(str2lang(each_fct[i, ]$fct_lvl)),
-                       ordered = each_fct[i, ]$fct_ordered,
+            data.frame(levels  = levels_vec,
+                       labels  = levels_vec,
+                       ordered = c(each_fct[i, ]$fct_ordered, rep("", length(levels_vec) - 1)),
+                       exclude = "",
                        stringsAsFactors = FALSE
             ),
             file = file.path(save_path, each_fct[i, ]$fname), quote = FALSE,
