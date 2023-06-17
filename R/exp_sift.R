@@ -10,7 +10,6 @@ closure.sift <- function() {
         # The df is passed to internal functions as a Char string, then evaluated later.
         df_name <- deparse(substitute(.df))
 
-
         # ---- 1. Ensure that df is a dataframe ------------------------------------------
 
         if (!is.data.frame(.df)) {
@@ -42,8 +41,9 @@ closure.sift <- function() {
             # If dots is empty, then return the dictionary itself.
 
             cli::cli_alert_info(msg_sift("report dims", 1,
+                                         df_name,
                                          length(unique(dict[["varname"]])),
-                                         fold(dict[["varname"]], n = 50)),
+                                         fold_middle(dict[["varname"]], n = 50)),
                                 wrap = TRUE)
             cli::cat_line()
 

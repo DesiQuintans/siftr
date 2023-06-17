@@ -42,6 +42,30 @@ fold <- function(vec, n = 2) {
 }
 
 
+
+fold_middle <- function(vec, n = 2) {
+    if (n < 2) {
+        n <- 2  # A 'middle' needs to exist.
+    }
+
+    if (length(vec) <= n) {
+        return(paste(vec, collapse = ", "))
+    }
+
+    num_head <- floor(n / 2)    # If an odd number is given as n, prefer to show
+    num_tail <- ceiling(n / 2)  # more in the tail than in the head.
+
+    head_idx <- 1:num_head
+    tail_idx <- (length(vec) - (num_tail - 1)):length(vec)
+
+    sprintf("%s ... [%i skipped] ... %s",
+            paste(vec[head_idx], collapse = ", "),
+            length(vec) - n,
+            paste(vec[tail_idx], collapse = ", "))
+}
+
+
+
 # For a multi-element vector 1:4, report it as "1, 2, 3, or 4".
 fold_or <- function(vec, word = "or") {
     v <- as.character(vec)

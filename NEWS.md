@@ -4,6 +4,9 @@
     - save_dictionary() writes an empty `exclude` column to factor files.
     
 - CHANGED
+    - Changes to sift()'s announcement of a dictionary's contents. Closes <https://github.com/DesiQuintans/siftr/issues/15>:
+        - Now says "{dataframe name} contains n columns..." instead of the generic "Dictionary contains n columns...".
+        - Now shows head and tail of column names rather than just the head.
     - save_dictionary() writes only one cell of the `ordered` column, to conform to what real-world users would do.
 
 
