@@ -1,4 +1,12 @@
-# Github-installed in-development version (> 1.0.1)
+# Github-installed in-development version (> 1.1.0)
+
+
+
+
+# siftr 1.1.0
+
+- FIXED
+    - Removed `useHash = TRUE` from `sample.int()` inside `should_approx()` to match changes made in R 4.2.0. `sample.int()` now decided for itself whether to `useHash` or not. Closes <https://github.com/DesiQuintans/siftr/issues/16>.
 
 - ADDED
     - save_dictionary() writes an empty `exclude` column to factor files.

@@ -1,7 +1,7 @@
 Package: siftr
 Type: Package
 Title: Fuzzily Search a Dataframe to Find Relevant Columns
-Version: 1.0.1
+Version: 1.1.0
 Authors@R: c(
     person(given   = "Desi", 
            family  = "Quintans", 

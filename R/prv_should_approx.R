@@ -16,10 +16,10 @@
 # @md
 should_approx <- function(x) {
     if (length(x) > options_sift("sift_guessmax")) {
-        # sample.int with useHash is better
-        x         <- sort(sample.int(n = length(x),
-                                     size = options_sift("sift_guessmax"),
-                                     useHash = TRUE))
+        x         <- sort(sample.int(n       = length(x),
+                                     replace = FALSE,
+                                     prob    = NULL,
+                                     size    = options_sift("sift_guessmax")))
         mark      <- cli::symbol["warning"]
         is_approx <- TRUE
     } else {
