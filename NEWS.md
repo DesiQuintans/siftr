@@ -1,6 +1,7 @@
 # Github-installed in-development version (> 1.1.0)
 
-
+- FIXED
+    - Curly-brace text in variable labels, value labels, and values no longer raise errors by colliding with glue strings. Closes <https://github.com/DesiQuintans/siftr/issues/17>.
 
 
 # siftr 1.1.0

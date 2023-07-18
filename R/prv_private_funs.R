@@ -142,3 +142,11 @@ plural <- function(n) {
 
 
 
+# Escape braces in glue() by doubling them
+# https://glue.tidyverse.org/#a-literal-brace-is-inserted-by-using-doubled-braces
+esc_braces <- function(str) {
+    str <- gsub(pattern = "{", replacement = "{{", fixed = TRUE, x = str)
+    str <- gsub(pattern = "}", replacement = "}}", fixed = TRUE, x = str)
+
+    return(str)
+}

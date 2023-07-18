@@ -26,13 +26,13 @@ build_dictionary <- function(DF, dictlist) {
     dct_classes   <- sapply(DF, function(x) { paste(class(x), collapse = ", ") })
     dct_types     <- sapply(DF, typeof)
     dct_pct_miss  <- sapply(DF, function(col) { trunc((sum(is.na(col)) / length(col)) * 100) })
-    dct_rand_uniq <- sapply(DF, some_uniques)
+    dct_rand_uniq <- esc_braces(sapply(DF, some_uniques))
     dct_all_same  <- sapply(DF, invariant)
 
     # Getting labels into vectors of length 1.
-    var_labs <- crunch(raw_var_labs)
-    val_labs <- crunch(raw_val_labs)
-    fct_lvls <- crunch(raw_fct_lvls)
+    var_labs <- esc_braces(crunch(raw_var_labs))
+    val_labs <- esc_braces(crunch(raw_val_labs))
+    fct_lvls <- esc_braces(crunch(raw_fct_lvls))
     # Those labels and unique values joined together to make searchable strings.
     haystacks <- smash(raw_varnames, var_labs, val_labs, fct_lvls, dct_rand_uniq)
 
