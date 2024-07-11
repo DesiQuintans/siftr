@@ -40,7 +40,7 @@ haven_to_factor <- function(x, ...) {
     levs <- attr(x, "labels")
 
     # Prefix values on labels.
-    labs <- sprintf("%i (%s)", levs, names(levs))
+    labs <- sprintf("%s (%s)", levs, names(levs))
 
     fac <- factor(as.character(x),
                   levels = levs,
