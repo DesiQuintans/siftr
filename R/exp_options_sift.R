@@ -63,7 +63,7 @@ options_sift <- function(key = c("sift_limit", "sift_guessmax", "sift_peeklength
         cli::cli_text("See ", cli::col_yellow("?options_sift"), " for what these control.")
 
         # I choose not to return curr_options here because I do not want to
-        # create anoter way of getting options. All option accesses in sift
+        # create another way of getting options. All option accesses in sift
         # should happen through options_sift("name of option").
         return(invisible(NULL))
     }
