@@ -58,9 +58,9 @@ fold_middle <- function(vec, n = 2) {
     head_idx <- 1:num_head
     tail_idx <- (length(vec) - (num_tail - 1)):length(vec)
 
-    sprintf("%s ... [%i skipped] ... %s",
+    sprintf("%s...\f[ Skipping %s ]\f...%s",
             paste(vec[head_idx], collapse = ", "),
-            length(vec) - n,
+            cli::pluralize("{length(vec) - n} column{?s}"),
             paste(vec[tail_idx], collapse = ", "))
 }
 

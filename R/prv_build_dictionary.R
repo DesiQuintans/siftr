@@ -9,7 +9,9 @@ build_dictionary <- function(DF, dictlist) {
     df_name <- DF
     DF <- eval(as.symbol(DF))
 
-    cli::cli_alert_info(msg_sift("building", 1, df_name), wrap = TRUE)
+    cli::cli_inform(
+        message = c("i" = "Building the dictionary for {.var {df_name}}...")
+    )
 
     start_time <- Sys.time()
 
@@ -61,7 +63,9 @@ build_dictionary <- function(DF, dictlist) {
     elapsed <- round(end_time - start_time, digits = 2)
     elapsed_str <- paste(elapsed, attr(elapsed, "units"))
 
-    cli::cli_alert_success(msg_sift("built", 1, elapsed_str))
+    cli::cli_inform(
+        message = c("v" = "Dictionary was built in {elapsed_str}."),
+    )
     cli::cat_line()
 
     return(invisible(dictlist))

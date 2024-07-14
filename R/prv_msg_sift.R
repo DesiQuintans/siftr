@@ -12,18 +12,11 @@
 # @md
 msg_sift <- function(entry, i = 1, ...) {
     text <- list(
-        `not a df`    = c("'%s' is not a dataframe.",
-                          "sift() only searches through dataframes."),
-
         `report dims` = c("'%s' has %i columns: %s."),
 
         `no matches`  = c("No matches found for query '%s' with .dist = %.2f.",
                           "If you're using a regular expression, pass it as a string.",
                           "Try increasing '.dist = %.2f' to allow more distant matches."),
-
-        `building`    = c("Building dictionary for '%s'. This only happens when it changes."),
-
-        `built`       = c("Dictionary was built in %s."),
 
         `n results`   = c("There %s %i result%s for query `%s`."),
 

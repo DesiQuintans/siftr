@@ -1,8 +1,7 @@
 # sift() maintains its hash and dictionary lists in a closure, prooty fancy!
-closure.sift <- function() {
+closure.sift <- function(search_where) {
     current_hash <- list()  # Stores named hashes of dataframes.
     current_dict <- list()  # Stores named dataframe dictionaries.
-
 
 
     # ---- sift() begins here -------------------------
@@ -10,12 +9,23 @@ closure.sift <- function() {
         # The df is passed to internal functions as a Char string, then evaluated later.
         df_name <- deparse(substitute(.df))
 
+
         # ---- 1. Ensure that df is a dataframe ------------------------------------------
 
+        # Does it exist at all?
+        tryCatch(is.data.frame(.df), error = function(e) {
+            cli::cli_abort(
+                message = c("No object named {.var {df_name}} was found.",
+                            " " = "Does it exist? Is its name correct?"),
+                call    = NULL)
+        })
+
+        # Is it a dataframe?
         if (!is.data.frame(.df)) {
-            cli::cli_alert_danger( msg_sift("not a df", 1, df_name))
-            cli::cli_alert_warning(msg_sift("not a df", 2))
-            cli::cat_line()
+            cli::cli_abort(
+                message = c("{.var {df_name}} is not a dataframe.",
+                            " " = "{.pkg siftr} only searches through dataframes."),
+                call    = NULL)
         }
 
 
@@ -33,22 +43,62 @@ closure.sift <- function() {
         dict <- current_dict[[df_name]]
 
 
-        # ---- 2. Convert ... into a query and perform a search --------------------------
+        # ---- 3. Shortcut exit if no search is requested --------------------------------
 
-        orig_query <- nse_dots(...)
+        orig_query  <- nse_dots(...)
 
         if (identical(orig_query, character(0))) {
             # If dots is empty, then return the dictionary itself.
 
-            cli::cli_alert_info(msg_sift("report dims", 1,
-                                         df_name,
-                                         length(unique(dict[["varname"]])),
-                                         fold_middle(dict[["varname"]], n = 50)),
-                                wrap = TRUE)
-            cli::cat_line()
+            # Report some of the variables in the dataframe.
+            num_cols   <- length(unique(dict[["varname"]]))
+            some_names <- fold_middle(dict[["varname"]], n = 50)
+            cli::cli_inform(
+                message = c("i" = "{.var {df_name}} has {num_cols} column{?s}:",
+                            " " = "{some_names}.")
+            )
 
             return(invisible(dict))
+        }
+
+        # ---- 4. If a search is needed, do one ------------------------------------------
+
+        orig_query  <- nse_dots(...)
+
+        # TAIL: search_where: near, name, desc, factors, haystack
+
+        search_func <- character(0)
+
+        if (identical(orig_query, character(0))) {
+            # If dots is empty, then no search is performed.
+            query <- orig_query
+
         } else if (length(orig_query) == 1) {
+            # If dots has just one item in it, then treat it as an agrep() search, which
+            # is possibly a regular expression.
+            search_func <- "agrep"
+            query <- orig_query
+
+        } else {
+            # If dots has more than one element, then use it to build a fuzzy search
+            # with look-around.
+
+            if (.dist > 0) {
+                cli::cli_warn(c("!" = msg_sift("dist_ignore", 1, .dist),
+                                "i" = msg_sift("dist_ignore", 2)))
+            }
+
+            # Fuzzy needle requires PERL regex, which agrep and aregexc don't support.
+            search_func <- "grep"
+            query <- fuzzy_needle(orig_query)  # E.g. (?=.*gallon)(?=.*mileage)
+        }
+
+
+
+
+        # ---- 2. Convert ... into a query -----------------------------------------------
+
+        if (length(orig_query) == 1) {
             # If dots has just one item in it, then treat it as an agrep() search, which
             # is possibly a regular expression.
 
