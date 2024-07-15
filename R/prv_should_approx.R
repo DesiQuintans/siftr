@@ -7,13 +7,12 @@
 # is small enough to simply use, or whether it's so big that randomly sampling from it
 # would be more efficient.
 #
-# @param x (Vector) The vector to sample.
+# x (Vector) The vector to sample.
 #
-# @return A named list with 3 entries: `indices` contains chosen indices of `x`; `marker`
-#      is a text marker that indicates whether `x` was sampled. `is_approx` is `TRUE` if
-#      `x` was sampled, and `FALSE` if all indices of `x` were returned.
-#
-# @md
+# Returns: A named list with 3 entries: `indices` contains chosen indices of
+#          `x`; `marker` is a text marker that indicates whether `x` was sampled.
+#          `is_approx` is `TRUE` if `x` was sampled, and `FALSE` if all indices
+#          of `x` were returned.
 should_approx <- function(x) {
     if (length(x) > options_sift("sift_guessmax")) {
         x         <- sort(sample.int(n       = length(x),

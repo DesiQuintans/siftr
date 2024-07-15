@@ -3,7 +3,7 @@
 \docType{data}
 \name{mtcars_lab}
 \alias{mtcars_lab}
-\title{Labelled version of mtcars for testing \code{siftr}}
+\title{Labelled version of \code{mtcars} for testing \code{siftr}}
 \format{
 A dataframe with 15 columns and 32 rows.
 }

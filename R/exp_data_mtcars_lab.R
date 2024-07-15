@@ -59,7 +59,7 @@
 
 # ---- This documents mtcars_lab -----------------------------------------------
 
-#' Labelled version of mtcars for testing `siftr`
+#' Labelled version of `mtcars` for testing `siftr`
 #'
 #' This is `mtcars` with value labels, variable labels (in `vs` only), some transformation
 #' to factor (`car` and `am`), an added Logical column (`above_avg`), an added column

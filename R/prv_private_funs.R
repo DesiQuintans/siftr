@@ -26,23 +26,8 @@ codify <- function(x, rev = FALSE) {
 }
 
 
-# For a multi-element vector, print the first n unique items and announce how many
-# others remain.
-# If n > length(vec), just print the whole thing.
-fold <- function(vec, n = 2) {
-    vec <- unique(vec)
-
-    items <- vec[1:n]
-    items <- items[!is.na(items)]
-
-    remain <- sum(!match(vec, items, nomatch = FALSE), na.rm = TRUE)
-    remain_str <- ifelse(remain > 0, sprintf(", and %i more", remain), "")
-
-    paste0(paste(items, collapse = ", "), remain_str)
-}
-
-
-
+# Given a vector with many elements, prints some from the head, some from the
+# tail, and skips the excess in the middle.
 fold_middle <- function(vec, n = 2) {
     if (n < 2) {
         n <- 2  # A 'middle' needs to exist.
@@ -58,21 +43,11 @@ fold_middle <- function(vec, n = 2) {
     head_idx <- 1:num_head
     tail_idx <- (length(vec) - (num_tail - 1)):length(vec)
 
-    sprintf("%s ... [%i skipped] ... %s",
+    sprintf("%s...\f[ Skipping %s ]\f...%s",
             paste(vec[head_idx], collapse = ", "),
-            length(vec) - n,
+            cli::pluralize("{length(vec) - n} column{?s}"),
             paste(vec[tail_idx], collapse = ", "))
 }
-
-
-
-# For a multi-element vector 1:4, report it as "1, 2, 3, or 4".
-fold_or <- function(vec, word = "or") {
-    v <- as.character(vec)
-    v[length(v)] <- paste(word, v[length(v)])
-    return(paste(v, collapse = ", "))
-}
-
 
 
 # Turn a list of words into a fuzzy regex
@@ -80,16 +55,6 @@ fold_or <- function(vec, word = "or") {
 # A fuzzy regex is one that will match search terms in any order by using PERL
 # lookaround. This can be very slow, but is often worth the cost to get more
 # complete results.
-#
-# @param vec (Character) A string containing space-separated keywords to search for.
-#
-# @return A string where each word has been wrapped as a lookaround term.
-#
-# @examples
-# \dontrun{
-# fuzzy_needle("network centrality")
-# #> [1] "(?=.*network)(?=.*centrality)"
-# }
 fuzzy_needle <- function(vec) {
     words <- unique(unlist(strsplit(vec, "\\s+")))
 
@@ -102,44 +67,6 @@ fuzzy_needle <- function(vec) {
 has_class <- function(obj, classname) {
     any(classname %in% class(obj))
 }
-
-
-# Truncate long strings with ellipsis
-# shorten(state.name, 7)
-shorten <- function(x, width) {
-    x <- as.character(x)
-    is_long <- nchar(x) > width
-                                               # Makes room for ellipsis
-    x[is_long] <- paste0(substr(x[is_long], 1, width - 1),
-                         cli::symbol["ellipsis"])
-
-    return(x)
-}
-
-
-
-
-
-
-# Plural forms
-plural <- function(n) {
-    if (n == 1) {
-        other <- "other"
-        s     <- ""
-        was   <- "was"
-    } else {
-        other <- "others"
-        s     <- "s"
-        was   <- "were"
-    }
-
-    return(invisible(list(other = other,
-                          others = other,
-                          s = s,
-                          was = was,
-                          were = was)))
-}
-
 
 
 # Escape braces in glue() by doubling them
