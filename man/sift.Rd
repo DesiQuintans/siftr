@@ -2,9 +2,18 @@
 % Please edit documentation in R/exp_sift.R
 \name{sift}
 \alias{sift}
+\alias{sift.name}
+\alias{sift.desc}
+\alias{sift.factors}
 \title{Find relevant variables in a dataframe using fuzzy searches}
 \usage{
 sift(.df, ..., .dist = 0, .rebuild = FALSE)
+
+sift.name(.df, ..., .dist = 0, .rebuild = FALSE)
+
+sift.desc(.df, ..., .dist = 0, .rebuild = FALSE)
+
+sift.factors(.df, ..., .dist = 0, .rebuild = FALSE)
 }
 \arguments{
 \item{.df}{(Dataframe) A dataframe to search through.}
@@ -60,6 +69,17 @@ The search that's performed depends on \code{...} and \code{.dist}:
 is ignored in orderless searching.
 }
 }
+\section{Functions}{
+\itemize{
+\item \code{sift()}: Search variable names, descriptive labels, factor labels, and unique values.
+
+\item \code{sift.name()}: Only search variable names (i.e. column names).
+
+\item \code{sift.desc()}: Only search the descriptive labels of variables.
+
+\item \code{sift.factors()}: Only search factor labels. This includes "value labels", e.g. 'haven_labelled' types.
+
+}}
 \examples{
 \donttest{
 sift(mtcars_lab)  # Builds a dictionary without searching.
@@ -75,6 +95,15 @@ sift(mtcars_lab, "date|time")  # Regular expression
 sift(mtcars_lab, "cyl|gear", number)  # Orderless search with regular expression
 }
 
+\donttest{
+sift.name(mtcars_lab, "car")  # Only searches variable names.
+}
+\donttest{
+sift.desc(mtcars_lab, "car")  # Only searches variable descriptions.
+}
+\donttest{
+sift.factors(mtcars_lab, "manual")  # Only searches factor levels and value labels.
+}
 }
 \seealso{
 \code{\link[=save_dictionary]{save_dictionary()}}, \code{\link[=options_sift]{options_sift()}}

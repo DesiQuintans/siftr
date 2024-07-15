@@ -21,6 +21,16 @@ build_dictionary <- function(DF, dictlist) {
     raw_var_labs <- sapply(DF, attr, "label")
     raw_val_labs <- sapply(DF, function(col) { names(attr(col, "labels")) })  # The names are what I want.
     raw_fct_lvls <- sapply(DF, levels)
+    # `raw_lab_lvls` combines the value labels and factor levels into one thing. With SAS datasets, for example,
+    # `haven` imports factors as labelled variables and not as proper factors.
+    raw_lab_lvls <- mapply(
+        function(x, y) {
+            result <- unique(c(x, y))
+            result[is.null(result)] <- ""
+            return(result)
+        },
+        raw_fct_lvls, raw_val_labs, SIMPLIFY = FALSE)
+
 
     # Extra details for the data dictionary
     dct_type_strs <- sapply(DF, coltype)
@@ -32,11 +42,12 @@ build_dictionary <- function(DF, dictlist) {
     dct_all_same  <- sapply(DF, invariant)
 
     # Getting labels into vectors of length 1.
-    var_labs <- esc_braces(crunch(raw_var_labs))
-    val_labs <- esc_braces(crunch(raw_val_labs))
-    fct_lvls <- esc_braces(crunch(raw_fct_lvls))
+    var_labs  <- esc_braces(crunch(raw_var_labs))
+    val_labs  <- esc_braces(crunch(raw_val_labs))
+    fct_lvls  <- esc_braces(crunch(raw_fct_lvls))
+    labs_lvls <- esc_braces(crunch(raw_lab_lvls))
     # Those labels and unique values joined together to make searchable strings.
-    haystacks <- smash(raw_varnames, var_labs, val_labs, fct_lvls, dct_rand_uniq)
+    haystacks <- smash(raw_varnames, var_labs, labs_lvls, dct_rand_uniq)
 
     dictionary <-
         data.frame(
@@ -50,7 +61,9 @@ build_dictionary <- function(DF, dictlist) {
             all_same    = dct_all_same,
             val_lab     = codify(raw_val_labs),
             fct_lvl     = codify(raw_fct_lvls),
+            labs_lvls   = labs_lvls,
             fct_ordered = dct_ordered,
+
             class       = codify(dct_classes),
             type        = codify(dct_types),
             haystack    = haystacks,

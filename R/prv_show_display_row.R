@@ -3,10 +3,10 @@
 #
 # This function controls how results from the data dictionary
 #
-# @param dr (Character) A named Character vector which is one extracted row
+# dr (Character) A named Character vector which is one extracted row
 #      of the data dictionary (as sent to this function by apply() in sift()).
 #
-# @return Side-effect of printing to the terminal.
+# Returns nothing, with the side-effect of printing to the terminal.
 display_row <- function(dr) {
     # This should check whether the summary stat is NA/NULL, and if it's not, then print it.
     # This means that control of what is displayed from the dictionary is held here, and

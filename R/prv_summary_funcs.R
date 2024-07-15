@@ -1,13 +1,11 @@
 # Fast approximate summary functions
 
 # Randomly choose and show some unique values from a variable.
-#
 # This does some clever stuff depending on the class of the variable.
 #
-# @param x (Vector) A vector.
+# x (Vector) A vector.
 #
-# @return A Character string.
-# @md
+# Returns a Character string.
 some_uniques <- function(x) {
     # ---- Special cases -------------------------------------------------------
 
@@ -113,11 +111,10 @@ some_uniques <- function(x) {
 # it still has to run on each column, and there may be hundreds of those. It
 # therefore randomly samples the vector once it reaches `sift_guessmax`'s limit.
 #
-# @param x (Vector) A vector.
-# @param na.rm (Logical) If `TRUE`, remove `NA`s.
+# x (Vector) A vector.
+# na.rm (Logical) If `TRUE`, remove `NA`s.
 #
-# @return A logical.
-# @md
+# Returns a logical.
 invariant <- function(x) {
     # Source: https://stackoverflow.com/a/59067398/5578429
 
@@ -148,10 +145,9 @@ invariant <- function(x) {
 # objects with class `haven_labelled` have an underlying type, and both the
 # class and type are important to show.
 #
-# @param x (Vector) A vector.
+# x (Vector) A vector.
 #
-# @return Character.
-# @md
+# Returns a Character.
 coltype <- function(x) {
     #   class               typeof
     #

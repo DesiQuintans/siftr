@@ -6,7 +6,7 @@
 \alias{siftr-package}
 \title{siftr: Fuzzily Search a Dataframe to Find Relevant Columns}
 \description{
-Analysts who change projects frequently know that it can be hard to find the right column in an unfamiliar dataframe, especially when the dataframe spans hundreds of columns and millions of rows. 'siftr' is an interactive tool that finds relevant columns by fuzzily searching through a dataframe's column names, labels, factor levels, and unique values.
+Analysts who change projects frequently know that it can be hard to find the right column in an unfamiliar dataframe, especially when the dataframe spans thousands of columns and millions of rows. 'siftr' is an interactive tool that finds relevant columns by fuzzily searching through a dataframe's column names, labels, factor levels, and unique values.
 }
 \seealso{
 Useful links:

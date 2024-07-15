@@ -36,7 +36,7 @@
 #'
 #' @examples
 #' \donttest{
-#' save_dictionary(CO2, path = tempdir())
+#' save_dictionary(mtcars_lab, path = tempdir())
 #' }
 #'
 #' @md

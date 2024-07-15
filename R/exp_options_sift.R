@@ -69,9 +69,10 @@ options_sift <- function(key = c("sift_limit", "sift_guessmax", "sift_peeklength
     }
 
     if ((key %in% names(default_setting)) == FALSE) {
-        cli::cli_abort(c(
-            "x" = msg_sift("not option", 1, key),
-            "i" = msg_sift("not option", 2, fold_or(names(default_setting)))
+        cli::cli_abort(
+            message = c(
+                "x" = "{.val {key}} is not one of {.pkg siftr}'s options.",
+                "i" = "Accepted options are: {.val {names(default_setting)}}."
             ))
     }
 
