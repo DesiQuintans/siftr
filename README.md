@@ -15,11 +15,9 @@ It was designed with medical, census, and survey data in mind, where dataframes 
 # Installation
 
 ``` r
-# Install it from CRAN
-install.packages("siftr")
+# CRAN soon
 
 # Or install the live development version from Github.
-# Want to know what this version has compared to CRAN? See 'NEWS.md' above.
 remotes::install_github("DesiQuintans/siftr")
 ```
 
@@ -42,12 +40,15 @@ options(defaultPackages = c('datasets', 'utils', 'grDevices', 'graphics', 'stats
 
 # Functions in `siftr`
 
-| Function         | Description                                          |
-|:-----------------|:-----------------------------------------------------|
-| `sift()`         | Search through a dataframe's columns.                |
+| Function            | Description                                            |
+|:--------------------|:-------------------------------------------------------|
+| `sift()`            | Search through a dataframe's columns.                  |
+| `sift.name()`       | Only search variable names (i.e. column names).        |
+| `sift.desc()`       | Only search descriptive labels.                        |
+| `sift.factors()`    | Only search factor labels (and value labels).          |
 | `save_dictionary()` | Save the data dictionary for use with [`tsv2label`][1] |
-| `options_sift()` | Get and set options related to how `sift` functions. |
-| `mtcars_lab`     | A dataset bundled with the package for testing.      |
+| `options_sift()`    | Get and set options related to how `siftr` functions.  |
+| `mtcars_lab`        | A dataset bundled with the package for testing.        |
 
 
 
