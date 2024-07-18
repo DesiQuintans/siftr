@@ -1,10 +1,8 @@
 # sift() maintains its hash and dictionary lists in a closure, prooty fancy!
 closure.sift <- function(search_where = NULL) {
-    stopifnot(!is.null(search_where))
-
-    current_hash <- list()  # Stores named hashes of dataframes.
-    current_dict <- list()  # Stores named dataframe dictionaries.
-
+    stopifnot(
+        !is.null(search_where)
+    )
 
     # ---- sift() begins here -------------------------
     s <- function(.df, ..., .dist = 0, .rebuild = FALSE) {
@@ -12,7 +10,7 @@ closure.sift <- function(search_where = NULL) {
         df_name <- deparse(substitute(.df))
 
 
-        # ---- 1. Ensure that df is a dataframe ------------------------------------------
+        # ---- 0. Ensure that df is a dataframe ------------------------------------------
 
         # Does it exist at all?
         tryCatch(is.data.frame(.df), error = function(e) {
@@ -31,18 +29,26 @@ closure.sift <- function(search_where = NULL) {
         }
 
 
-        # ---- 2. Has df been sift()ed before? Has it changed since the last time? -------
+        # ---- 1. Has df been sift()ed before? Has it changed since the last time? -------
 
-        new_hash <- hash_obj(df_name, current_hash)
+        fetched_hash <- get("saved_hash", envir = .siftr_env)
+        fetched_dict <- get("saved_dict", envir = .siftr_env)
 
-        if (.rebuild == TRUE || !identical(current_hash[[df_name]], new_hash[[df_name]])) {
+        new_hash <- hash_obj(df_name, fetched_hash)
+
+        if (.rebuild == TRUE || !(df_name %in% names(fetched_hash)) || !identical(fetched_hash[[df_name]], new_hash[[df_name]])) {
             # The new hash doesn't match the one that's stored for this object.
             # Update the stored hash and dictionary in the closure.
-            current_hash <<- new_hash
-            current_dict <<- build_dictionary(df_name, current_dict)
-        }
 
-        dict <- current_dict[[df_name]]
+            new_dict <- build_dictionary(df_name, fetched_dict)
+
+            assign("saved_hash", new_hash, envir = .siftr_env)
+            assign("saved_dict", new_dict, envir = .siftr_env)
+
+            dict <- new_dict[[df_name]]
+        } else {
+            dict <- fetched_dict[[df_name]]
+        }
 
 
         # ---- 3. Shortcut exit if no search is requested --------------------------------
@@ -60,7 +66,22 @@ closure.sift <- function(search_where = NULL) {
                             " " = "{some_names}.")
             )
 
-            return(invisible(dict))
+            # Save details about the last query.
+            assign(
+                x     = "last_query",
+                value =
+                    list(
+                        "df"      = df_name,
+                        "loc"     = search_where,
+                        "query"   = ".",
+                        "matches" = nrow(dict),
+                        "total"   = nrow(dict)
+                    ),
+                envir = .siftr_env
+            )
+
+            assign("last_sift", dict, envir = .siftr_env)
+            return(invisible(get("last_sift", envir = .siftr_env)))
         }
 
         # ---- 4. If a search is needed, do one ------------------------------------------
@@ -68,10 +89,10 @@ closure.sift <- function(search_where = NULL) {
         search_haystack <-
             switch(
                 search_where,
-                "all"     = dict$haystack,  # Searches colnames, col label, factor levels, unique values.
-                "name"    = dict$varname,   # Searches colnames only.
-                "desc"    = dict$var_lab,   # Searches col label only.
-                "factors" = dict$lab_lvls   # Searches variable labels and factor labels.
+                "entirety"      = dict$haystack,  # Searches colnames, col label, factor levels, unique values.
+                "names"         = dict$varname,   # Searches colnames only.
+                "descriptions"  = dict$var_lab,   # Searches col label only.
+                "factors"       = dict$lab_lvls   # Searches variable labels and factor labels.
             )
 
 
@@ -158,14 +179,29 @@ closure.sift <- function(search_where = NULL) {
             }
 
             cli::cli_alert_info(
-                "Use {.run View(.Last.value)} to view the full table of matches."
+                "Use {.run siftr::last.sift()} to view the full table of matches."
             )
         }
 
         cli::cat_line()
 
+        # Save details about the last query.
+        assign(
+            x     = "last_query",
+            value =
+                list(
+                    "df"      = df_name,
+                    "loc"     = search_where,
+                    "query"   = query,
+                    "matches" = total_results,
+                    "total"   = nrow(dict)
+                ),
+            envir = .siftr_env
+        )
+
         # Return a dataframe of all results, not just the ones that were shown.
-        return(invisible(dict[candidates, ]))
+        assign("last_sift", dict[candidates, ], envir = .siftr_env)
+        return(invisible(get("last_sift", envir = .siftr_env)))
     }
 
     return(s)
@@ -241,7 +277,7 @@ closure.sift <- function(search_where = NULL) {
 #' }
 #'
 #' @md
-sift <- closure.sift(search_where = "all")
+sift <- closure.sift(search_where = "entirety")
 
 
 #' @describeIn sift Only search variable names (i.e. column names).
@@ -250,7 +286,7 @@ sift <- closure.sift(search_where = "all")
 #' sift.name(mtcars_lab, "car")  # Only searches variable names.
 #' }
 #' @export
-sift.name <- closure.sift(search_where = "name")
+sift.name <- closure.sift(search_where = "names")
 
 
 #' @describeIn sift Only search the descriptive labels of variables.
@@ -259,7 +295,7 @@ sift.name <- closure.sift(search_where = "name")
 #' sift.desc(mtcars_lab, "car")  # Only searches variable descriptions.
 #' }
 #' @export
-sift.desc <- closure.sift(search_where = "desc")
+sift.desc <- closure.sift(search_where = "descriptions")
 
 
 #' @describeIn sift Only search factor labels. This includes "value labels", e.g. 'haven_labelled' types.

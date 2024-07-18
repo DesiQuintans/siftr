@@ -43,9 +43,3 @@ to take advantage of \code{vroom}, or in FST to take advantage of \code{fst}.
 you need to relabel it every time.
 }
 }
-\examples{
-\donttest{
-save_dictionary(mtcars_lab, path = tempdir())
-}
-
-}

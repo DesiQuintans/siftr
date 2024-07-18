@@ -45,7 +45,7 @@
 # }
 # @md
 hash_obj <- function(df_name, hashlist) {
-    # Early dev versions of sift hashed the entire object, but this became prohibitive
+    # Early dev versions of sift hashed the entire object, which became prohibitive
     # with even modest datasets (1 GB, ~ 300 cols and 2 million rows). But the entire
     # dataframe doesn't really need to be hashed, we can get lots of info from hashing
     # only part of it.

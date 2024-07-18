@@ -34,11 +34,6 @@
 #'      your file explorer.
 #' @export
 #'
-#' @examples
-#' \donttest{
-#' save_dictionary(mtcars_lab, path = tempdir())
-#' }
-#'
 #' @md
 save_dictionary <- function(df, path = stop("'path' must be specified."), ...) {
     df_symb <- substitute(df)
@@ -62,7 +57,8 @@ save_dictionary <- function(df, path = stop("'path' must be specified."), ...) {
     # This rebuilds the dictionary via sift() so that the updated dictionary is
     # immediately available inside sift()'s closure.
     # https://stackoverflow.com/a/75849101/5578429
-    dict <- eval(bquote(sift(.(df_symb), .rebuild = TRUE)))
+
+    dict <- eval(bquote(sift(.(as.symbol(df_char)), .rebuild = TRUE)), envir = .siftr_env)
     rownames(dict) <- NULL
 
 

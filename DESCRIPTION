@@ -1,7 +1,7 @@
 Package: siftr
 Type: Package
-Title: Fuzzily Search a Dataframe to Find Relevant Columns
-Version: 2.0.0
+Title: Fuzzily Search a data frame to Find Relevant Columns
+Version: 2.2.0
 Authors@R: c(
     person(given   = "Desi", 
            family  = "Quintans", 
@@ -9,10 +9,10 @@ Authors@R: c(
            role    = c("cre", "aut", "cph"),
            comment = c(ORCID = "0000-0003-3356-0293")))
 Description: Analysts who change projects frequently know that it can be hard
-    to find the right column in an unfamiliar dataframe, especially when the
-    dataframe spans thousands of columns and millions of rows. 'siftr' is an
+    to find the right column in an unfamiliar data frame, especially when the
+    data frame spans thousands of columns and millions of rows. 'siftr' is an
     interactive tool that finds relevant columns by fuzzily searching through
-    a dataframe's column names, labels, factor levels, and unique values.
+    a data frame's column names, labels, factor levels, and unique values.
 License: MIT + file LICENSE
 URL: https://github.com/DesiQuintans/siftr
 BugReports: https://github.com/DesiQuintans/siftr/issues
