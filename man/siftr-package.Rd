@@ -4,7 +4,7 @@
 \name{siftr-package}
 \alias{siftr}
 \alias{siftr-package}
-\title{siftr: Fuzzily Search a data frame to Find Relevant Columns}
+\title{siftr: Fuzzily Search a Data Frame to Find Relevant Columns}
 \description{
 Analysts who change projects frequently know that it can be hard to find the right column in an unfamiliar data frame, especially when the data frame spans thousands of columns and millions of rows. 'siftr' is an interactive tool that finds relevant columns by fuzzily searching through a data frame's column names, labels, factor levels, and unique values.
 }
