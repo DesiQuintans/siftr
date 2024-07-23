@@ -2,9 +2,8 @@
 
 #' View all matches from the most recent sift
 #'
-#' This is an alias for `utils::View(.Last.result)`, but its stores the last
-#' sift result so that it's accessible even if you've done other things
-#' since then.
+#' This stores the last sift result so that it's accessible even if you've done
+#' other things since then.
 #'
 #' It returns the complete table of matches, i.e. even if there were too many
 #' results to print to the console, all results are visible here. If run in
@@ -16,7 +15,7 @@
 #'
 #' @export
 #' @md
-last.sift <- function() {
+lastsift <- function() {
     result <- get("last_sift", envir = .siftr_env)
     deets  <- get("last_query", envir = .siftr_env)
 
@@ -45,7 +44,7 @@ last.sift <- function() {
     }
 
     # Retrieves the RStudio version of View() if it exists, otherwise gets the
-    # regular utils::View().
+    # regular version.
     # https://stackoverflow.com/a/48242386/5578429
     myView <- function(x, title) {
         get("View", envir = as.environment("package:utils"))(x, title)

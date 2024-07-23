@@ -58,14 +58,6 @@ closure.sift <- function(search_where = NULL) {
         if (identical(orig_query, character(0))) {
             # If dots is empty, then return the dictionary itself.
 
-            # Report some of the variables in the dataframe.
-            num_cols   <- length(unique(dict[["varname"]]))
-            some_names <- fold_middle(dict[["varname"]], n = 50)
-            cli::cli_inform(
-                message = c("i" = "{.var {df_name}} has {num_cols} column{?s}:",
-                            " " = "{some_names}.")
-            )
-
             # Save details about the last query.
             assign(
                 x     = "last_query",
@@ -81,8 +73,23 @@ closure.sift <- function(search_where = NULL) {
             )
 
             assign("last_sift", dict, envir = .siftr_env)
+
+            # Report some of the variables in the dataframe.
+            num_cols   <- length(unique(dict[["varname"]]))
+            some_names <- fold_middle(dict[["varname"]], n = 50)
+            cli::cli_inform(
+                message = c("i" = "{.var {df_name}} has {num_cols} column{?s}:",
+                            " " = "{some_names}.")
+            )
+
+            cli::cli_alert_info(
+                "Use {.run siftr::lastsift()} to view the full dictionary."
+            )
+
+
             return(invisible(get("last_sift", envir = .siftr_env)))
         }
+
 
         # ---- 4. If a search is needed, do one ------------------------------------------
 
@@ -179,7 +186,7 @@ closure.sift <- function(search_where = NULL) {
             }
 
             cli::cli_alert_info(
-                "Use {.run siftr::last.sift()} to view the full table of matches."
+                "Use {.run siftr::lastsift()} to view the full table of matches."
             )
         }
 
