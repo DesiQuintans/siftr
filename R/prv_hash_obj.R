@@ -1,4 +1,4 @@
-# Hash an object with fastdigest and update a list with its name and hash
+# Hash an object with xxhashlite and update a list with its name and hash
 #
 # @param df_name (String) The name of a dataframe, as a Character string.
 # @param hashlist (List) The list/vector that will hold named hashes.
@@ -7,7 +7,7 @@
 #     hashed, and the value is the hash itself.
 #
 # @examples
-# # Example data
+# Example data
 # myiris <- iris
 #
 # # Initialise the empty hash list
@@ -18,31 +18,31 @@
 # x
 #
 # #> $myiris
-# #> [1] "0b3ea20866c7f9624af51089a7fe1b90"
+# #> [1] "bbe67a4d2af52ef8"
 #
 # # Add another hash
 # x <- hash_obj("mtcars", x)
 # x
 #
 # #> $myiris
-# #> [1] "0b3ea20866c7f9624af51089a7fe1b90"
+# #> [1] "bbe67a4d2af52ef8"
 # #>
 # #> $mtcars
-# #> [1] "8cf6009c35431a30d621433ae7e63905"
+# #> [1] "529f7839b2e2afeb"
 #
 # # Newly calculated hashes can overwrite/update an existing hash in the list.
 # # To demonstrate, let's change myiris somehow.
-# myiris <- head("myiris")
+# myiris <- head(myiris)
 #
 # x <- hash_obj("myiris", x)
 # x
 #
 # #> $myiris
-# #> [1] "6e5ee1af3da0e3141cb521323c8fd52c"
+# #> [1] "ed337279bf1527a4"
 # #>
 # #> $mtcars
-# #> [1] "8cf6009c35431a30d621433ae7e63905"
-# }
+# #> [1] "529f7839b2e2afeb"
+#
 # @md
 hash_obj <- function(df_name, hashlist) {
     # Early dev versions of sift hashed the entire object, which became prohibitive
@@ -70,7 +70,7 @@ hash_obj <- function(df_name, hashlist) {
         vapply(df, function(col) { sum(is.na(col)) }, integer(1))
     )
 
-    hashlist[df_name] <- fastdigest::fastdigest(fingerprint)
+    hashlist[df_name] <- xxhashlite::xxhash(fingerprint, algo = "xxh64")
 
     return(hashlist)
 }
